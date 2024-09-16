@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitUpAppBackend.Api", "FitUpAppBackend.Api\FitUpAppBackend.Api.csproj", "{E4765454-7BF1-4E12-A91C-8534EAC0F95E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{1FDE5314-C41C-4FC4-A519-6267929655AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitUpAppBackend.Shared", "FitUpAppBackend.Shared\FitUpAppBackend.Shared.csproj", "{0F2AAD97-FFC2-4345-8652-A1B5C970B4EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitUpAppBackend.Shared.Abstractions", "FitUpAppBackend.Shared.Abstractions\FitUpAppBackend.Shared.Abstractions.csproj", "{AF07C72F-ACAA-419D-B42D-3EE0AEFC446D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitUpAppBackend.Core", "FitUpAppBackend.Core\FitUpAppBackend.Core.csproj", "{BC0D582F-3D5D-4828-BB25-3344FF9FF3DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitUpAppBackend.Application", "FitUpAppBackend.Application\FitUpAppBackend.Application.csproj", "{ED118D24-C463-4EC5-8DBF-A17EE8C877D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitUpAppBackend.Infrastructure", "FitUpAppBackend.Infrastructure\FitUpAppBackend.Infrastructure.csproj", "{6594E5F7-A426-4446-B196-C7F276565970}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4765454-7BF1-4E12-A91C-8534EAC0F95E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4765454-7BF1-4E12-A91C-8534EAC0F95E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4765454-7BF1-4E12-A91C-8534EAC0F95E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4765454-7BF1-4E12-A91C-8534EAC0F95E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F2AAD97-FFC2-4345-8652-A1B5C970B4EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F2AAD97-FFC2-4345-8652-A1B5C970B4EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F2AAD97-FFC2-4345-8652-A1B5C970B4EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F2AAD97-FFC2-4345-8652-A1B5C970B4EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF07C72F-ACAA-419D-B42D-3EE0AEFC446D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF07C72F-ACAA-419D-B42D-3EE0AEFC446D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF07C72F-ACAA-419D-B42D-3EE0AEFC446D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF07C72F-ACAA-419D-B42D-3EE0AEFC446D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC0D582F-3D5D-4828-BB25-3344FF9FF3DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC0D582F-3D5D-4828-BB25-3344FF9FF3DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC0D582F-3D5D-4828-BB25-3344FF9FF3DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC0D582F-3D5D-4828-BB25-3344FF9FF3DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED118D24-C463-4EC5-8DBF-A17EE8C877D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED118D24-C463-4EC5-8DBF-A17EE8C877D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED118D24-C463-4EC5-8DBF-A17EE8C877D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED118D24-C463-4EC5-8DBF-A17EE8C877D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6594E5F7-A426-4446-B196-C7F276565970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6594E5F7-A426-4446-B196-C7F276565970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6594E5F7-A426-4446-B196-C7F276565970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6594E5F7-A426-4446-B196-C7F276565970}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0F2AAD97-FFC2-4345-8652-A1B5C970B4EF} = {1FDE5314-C41C-4FC4-A519-6267929655AB}
+		{AF07C72F-ACAA-419D-B42D-3EE0AEFC446D} = {1FDE5314-C41C-4FC4-A519-6267929655AB}
+	EndGlobalSection
+EndGlobal
