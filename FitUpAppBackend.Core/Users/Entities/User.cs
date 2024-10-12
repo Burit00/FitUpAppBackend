@@ -1,10 +1,12 @@
-﻿using FitUpAppBackend.Core.Workouts.Entities;
+﻿using FitUpAppBackend.Core.UserRoles.Entities;
+using FitUpAppBackend.Core.Workouts.Entities;
 using FitUpAppBackend.Shared.Abstractions.Entities;
 
 namespace FitUpAppBackend.Core.Users.Entities;
 
 public class User : Entity
 {
+    public UserRole UserRole { get; set; }
     public string Login { get; private set; }
     public string Email { get; private set; }
     public DateOnly DateOfBirth { get; private set; }
