@@ -1,6 +1,6 @@
-﻿using FitUpAppBackend.Core.Exercises.Entities;
+﻿using FitUpAppBackend.Core.Abstractions.Entities;
+using FitUpAppBackend.Core.Exercises.Entities;
 using FitUpAppBackend.Core.WorkoutSets.Entities;
-using FitUpAppBackend.Shared.Abstractions.Entities;
 
 namespace FitUpAppBackend.Core.WorkoutExercises.Entities;
 
@@ -13,15 +13,14 @@ public class WorkoutExercise : Entity
     
     private List<WorkoutSet> _workoutSets = new();
 
-    private WorkoutExercise(ushort orderIndex, Guid exerciseId, Exercise exercise)
+    private WorkoutExercise(ushort orderIndex, Guid exerciseId)
     {
         OrderIndex = orderIndex;
         ExerciseId = exerciseId;
-        Exercise = exercise;
     }
     
-    public static WorkoutExercise Create(ushort orderIndex, Guid exerciseId, Exercise exercise)
-        => new WorkoutExercise(orderIndex, exerciseId, exercise);
+    public static WorkoutExercise Create(ushort orderIndex, Guid exerciseId)
+        => new WorkoutExercise(orderIndex, exerciseId);
 
     public void AddWorkoutSet(WorkoutSet workoutSet)
     {

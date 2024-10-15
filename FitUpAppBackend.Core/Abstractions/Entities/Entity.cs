@@ -1,5 +1,5 @@
 ﻿
-namespace FitUpAppBackend.Shared.Abstractions.Entities;
+namespace FitUpAppBackend.Core.Abstractions.Entities;
 
 public abstract class Entity
 {

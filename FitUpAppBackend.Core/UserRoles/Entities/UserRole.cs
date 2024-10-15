@@ -1,4 +1,4 @@
-using FitUpAppBackend.Shared.Abstractions.Entities;
+using FitUpAppBackend.Core.Abstractions.Entities;
 
 namespace FitUpAppBackend.Core.UserRoles.Entities;
 

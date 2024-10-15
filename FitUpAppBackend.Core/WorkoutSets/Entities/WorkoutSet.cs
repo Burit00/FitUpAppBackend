@@ -1,6 +1,6 @@
+using FitUpAppBackend.Core.Abstractions.Entities;
 using FitUpAppBackend.Core.SetParameters.Entities;
 using FitUpAppBackend.Core.WorkoutExercises.Entities;
-using FitUpAppBackend.Shared.Abstractions.Entities;
 
 namespace FitUpAppBackend.Core.WorkoutSets.Entities;
 
@@ -13,13 +13,12 @@ public sealed class WorkoutSet : Entity
     
     private List<SetParameter> _setParameters = new();
 
-    private WorkoutSet(uint orderIndex, WorkoutExercise workoutExercise)
+    private WorkoutSet(uint orderIndex, Guid workoutExerciseId)
     {
         OrderIndex = orderIndex;
-        WorkoutExerciseId = workoutExercise.Id;
-        WorkoutExercise = workoutExercise;
+        WorkoutExerciseId = workoutExerciseId;
     }
     
-    public static WorkoutSet Create(uint orderIndex, WorkoutExercise workoutExercise)
-        => new WorkoutSet(orderIndex, workoutExercise);
+    public static WorkoutSet Create(uint orderIndex, Guid workoutExerciseId)
+        => new WorkoutSet(orderIndex, workoutExerciseId);
 }

@@ -1,7 +1,7 @@
-﻿using FitUpAppBackend.Core.Exercises.Entities;
+﻿using FitUpAppBackend.Core.Abstractions.Entities;
+using FitUpAppBackend.Core.Exercises.Entities;
 using FitUpAppBackend.Core.SetParameterNames.Enums;
 using FitUpAppBackend.Core.SetParameters.Entities;
-using FitUpAppBackend.Shared.Abstractions.Entities;
 
 namespace FitUpAppBackend.Core.SetParameterNames.Entities;
 

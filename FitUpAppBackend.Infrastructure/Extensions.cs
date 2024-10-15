@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FitUpAppBackend.Infrastructure.DAL.EF;
+using FitUpAppBackend.Infrastructure.DAL.EF.Context;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -6,9 +10,12 @@ namespace FitUpAppBackend.Infrastructure;
 
 public static class Extensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
+        
+        services.AddEFContext(configuration);
+
         services.AddSwaggerGen(swagger =>
         {
             swagger.EnableAnnotations();
@@ -27,7 +34,7 @@ public static class Extensions
         app.UseSwagger();
         app.UseSwaggerUI();
         app.MapControllers();
-        
+
         return app;
     }
 }

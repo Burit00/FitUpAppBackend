@@ -1,6 +1,6 @@
+using FitUpAppBackend.Core.Abstractions.Entities;
 using FitUpAppBackend.Core.Users.Entities;
 using FitUpAppBackend.Core.WorkoutExercises.Entities;
-using FitUpAppBackend.Shared.Abstractions.Entities;
 
 namespace FitUpAppBackend.Core.Workouts.Entities;
 
@@ -13,15 +13,14 @@ public sealed class Workout : Entity
     
     private List<WorkoutExercise> _workoutExercises => new();
     
-    private Workout(User user, DateTimeOffset date)
+    private Workout(Guid userId, DateTimeOffset date)
     {
-        User = user;
-        UserId = user.Id;
+        UserId = userId;
         Date = date;
     }
 
-    public static Workout Create(User user, DateTimeOffset date)
-     => new Workout(user, date);
+    public static Workout Create(Guid userId, DateTimeOffset date)
+     => new Workout(userId, date);
 
     public void AddExercise(WorkoutExercise exercise)
     {

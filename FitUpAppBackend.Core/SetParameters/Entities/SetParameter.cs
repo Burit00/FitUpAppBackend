@@ -1,9 +1,9 @@
 using System.Diagnostics.Contracts;
+using FitUpAppBackend.Core.Abstractions.Entities;
 using FitUpAppBackend.Core.SetParameterNames.Entities;
 using FitUpAppBackend.Core.SetParameterNames.Enums;
 using FitUpAppBackend.Core.SetParameters.Exceptions;
 using FitUpAppBackend.Core.WorkoutSets.Entities;
-using FitUpAppBackend.Shared.Abstractions.Entities;
 
 namespace FitUpAppBackend.Core.SetParameters.Entities;
 
@@ -13,14 +13,13 @@ public sealed class SetParameter : Entity
     public string Value { get; private set; }
     public WorkoutSet WorkoutSet { get; private set; }
 
-    private SetParameter(SetParameterName name, string value)
+    private SetParameter(string value)
     {
-        Name = name;
         Value = value;
     }
 
-    public static SetParameter Create(SetParameterName name, string value)
-        => new SetParameter(name, value);
+    public static SetParameter Create(string value)
+        => new SetParameter(value);
 
     public void UpdateValue(string value)
     {

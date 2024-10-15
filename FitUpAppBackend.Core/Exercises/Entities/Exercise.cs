@@ -1,8 +1,8 @@
-﻿using FitUpAppBackend.Core.Exercises.Exceptions;
+﻿using FitUpAppBackend.Core.Abstractions.Entities;
+using FitUpAppBackend.Core.Exercises.Exceptions;
 using FitUpAppBackend.Core.ExerciseCategories.Entities;
 using FitUpAppBackend.Core.SetParameterNames.Entities;
 using FitUpAppBackend.Core.SetParameters.Entities;
-using FitUpAppBackend.Shared.Abstractions.Entities;
 
 namespace FitUpAppBackend.Core.Exercises.Entities;
 
@@ -16,22 +16,19 @@ public sealed class Exercise : Entity
     private List<SetParameterName> _setParameters = new();
     public IReadOnlyCollection<SetParameterName> SetParameters => _setParameters;
     
-    private Exercise(string name, ExerciseCategory category)
+    private Exercise(string name, Guid categoryId)
     {
         Name = name;
-        Category = category;
-        CategoryId = category.Id;
+        CategoryId = categoryId;
     }
     
-    public static Exercise Create(string name, ExerciseCategory category)
-        => new(name, category);
+    public static Exercise Create(string name, Guid categoryId)
+        => new(name, categoryId);
 
-    public void Update(string name, ExerciseCategory category)
+    public void UpdateName(string name)
     {
         ValidateExerciseName(name);
         Name = name;
-        CategoryId = category.Id;
-        Category = category;
     }
 
     private static void ValidateExerciseName(string name)
