@@ -1,10 +1,13 @@
-﻿using FitUpAppBackend.Infrastructure.DAL.EF;
+﻿using FitUpAppBackend.Core.Identity;
+using FitUpAppBackend.Core.Identity.Entities;
+using FitUpAppBackend.Infrastructure.Common.Swagger;
+using FitUpAppBackend.Infrastructure.DAL.EF;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
+using FitUpAppBackend.Infrastructure.DAL.Identity.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 namespace FitUpAppBackend.Infrastructure;
 
@@ -12,29 +15,33 @@ public static class Extensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddControllers();
+        services.AddIdentity<User, IdentityRole<Guid>>(o =>
+        {
+            o.Password.RequireDigit = true;
+            o.Password.RequireLowercase = true;
+            o.Password.RequireUppercase = true;
+            o.Password.RequireNonAlphanumeric = true;
+            o.Password.RequiredLength = 8;
+            o.Password.RequiredUniqueChars = 4;
+            
+            o.User.RequireUniqueEmail = true;
+        })
+            .AddEntityFrameworkStores<EFContext>()
+            .AddDefaultTokenProviders();
         
         services.AddEFContext(configuration);
-
-        services.AddSwaggerGen(swagger =>
-        {
-            swagger.EnableAnnotations();
-            swagger.SwaggerDoc("v1", new OpenApiInfo()
-            {
-                Title = "FitUp API",
-                Version = "v1",
-            });
-        });
+        
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddSwaggerConfig();
 
         return services;
     }
 
-    public static WebApplication UseInfrastructure(this WebApplication app)
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.MapControllers();
-
+        
         return app;
     }
 }
