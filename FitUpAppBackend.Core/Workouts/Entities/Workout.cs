@@ -1,5 +1,5 @@
 using FitUpAppBackend.Core.Abstractions.Entities;
-using FitUpAppBackend.Core.Users.Entities;
+using FitUpAppBackend.Core.Identity.Entities;
 using FitUpAppBackend.Core.WorkoutExercises.Entities;
 
 namespace FitUpAppBackend.Core.Workouts.Entities;

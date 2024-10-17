@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.8" />
     </ItemGroup>
 
@@ -22,8 +21,7 @@
         <Folder Include="ExerciseCategories\Exceptions\"/>
         <Folder Include="SetParameterNames\Entities\" />
         <Folder Include="SetParameterNames\Exceptions\" />
-        <Folder Include="Users\Entities\"/>
-        <Folder Include="Users\Exceptions\"/>
+        <Folder Include="Identity\Entities\" />
         <Folder Include="WorkoutExercises\Exceptions\"/>
         <Folder Include="WorkoutSets\Exceptions\"/>
         <Folder Include="Workouts\Exceptions\"/>
