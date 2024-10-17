@@ -1,10 +1,8 @@
 ﻿using FitUpAppBackend.Core.Identity;
 using FitUpAppBackend.Core.Identity.Entities;
-using FitUpAppBackend.Infrastructure.Common.Swagger;
 using FitUpAppBackend.Infrastructure.DAL.EF;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using FitUpAppBackend.Infrastructure.DAL.Identity.Services;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,16 +30,7 @@ public static class Extensions
         services.AddEFContext(configuration);
         
         services.AddScoped<IIdentityService, IdentityService>();
-        services.AddSwaggerConfig();
 
         return services;
-    }
-
-    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-        
-        return app;
     }
 }

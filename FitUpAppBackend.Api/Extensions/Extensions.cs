@@ -9,7 +9,15 @@ public static class Extensions
     {
         services.AddControllers(options => options.Filters.Add(new ExceptionFilter()));
         services.AddFluentValidationAutoValidation();
+        services.AddSwaggerConfig();
 
         return services;
+    }
+
+    public static IApplicationBuilder UseApi(this IApplicationBuilder app)
+    {
+        app.UseSwaggerConfig();
+        
+        return app;
     }
 }

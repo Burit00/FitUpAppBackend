@@ -1,9 +1,8 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace FitUpAppBackend.Infrastructure.Common.Swagger;
+namespace FitUpAppBackend.Api.Extensions;
 
-public static class Extensions
+public static class SwaggerExtensions
 {
     public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
     {
@@ -17,5 +16,16 @@ public static class Extensions
         });
         
         return services;
+    }
+
+    public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(opt =>
+        {
+            opt.SwaggerEndpoint("/swagger/v1/swagger.json", "FitUP API V1");
+        });
+
+        return app;
     }
 }

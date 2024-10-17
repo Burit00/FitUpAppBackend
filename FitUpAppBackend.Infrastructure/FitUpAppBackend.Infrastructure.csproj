@@ -22,4 +22,8 @@
       <ProjectReference Include="..\FitUpAppBackend.Application\FitUpAppBackend.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Common\Swagger\" />
+    </ItemGroup>
+
 </Project>

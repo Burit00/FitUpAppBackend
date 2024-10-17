@@ -13,9 +13,10 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseApi();
+
 app.UseRouting();
 app.UseHttpsRedirection();
-app.UseInfrastructure();
 
 app.MapControllers();
 
