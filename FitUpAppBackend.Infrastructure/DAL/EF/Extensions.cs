@@ -1,4 +1,5 @@
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
+using FitUpAppBackend.Infrastructure.DAL.EF.Seeder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,8 @@ public static class Extensions
         
         services.AddDbContext<EFContext>(options =>
             options.UseNpgsql(connectionString).EnableSensitiveDataLogging());
+        
+        services.AddHostedService<DatabaseInitializer>();
         
         return services;
     }

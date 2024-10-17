@@ -32,10 +32,12 @@ public static class Extensions
         
         services.AddEFContext(configuration);
         
-        services.AddScoped<IIdentityService, IdentityService>();
-
-        services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
+        var emailConfig = new EmailConfig();
+        configuration.GetSection("EmailConfig").Bind(emailConfig);
+        services.AddSingleton(emailConfig);
+        
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IIdentityService, IdentityService>();
 
         return services;
     }

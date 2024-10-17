@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Common\Swagger\" />
+      <Folder Include="DAL\EF\Migrations\" />
       <Folder Include="Integrations\" />
     </ItemGroup>
 

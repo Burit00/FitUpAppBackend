@@ -9,7 +9,7 @@ builder.Services
     .AddCore()
     .AddInfrastructure(builder.Configuration)
     .AddApplication()
-    .AddApi();
+    .AddApi(builder.Configuration);
 
 var app = builder.Build();
 
@@ -17,7 +17,7 @@ app.UseApi();
 
 app.UseRouting();
 app.UseHttpsRedirection();
-
+app.UseCors("CorsPolicy");
 app.MapControllers();
 
 app.Run();

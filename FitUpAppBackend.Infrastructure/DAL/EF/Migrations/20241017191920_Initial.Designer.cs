@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
 {
     [DbContext(typeof(EFContext))]
-    [Migration("20241015102618_Initial")]
+    [Migration("20241017191920_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -75,46 +75,7 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
                     b.ToTable("Exercises");
                 });
 
-            modelBuilder.Entity("FitUpAppBackend.Core.SetParameterNames.Entities.SetParameterName", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Name")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SetParameterNames");
-                });
-
-            modelBuilder.Entity("FitUpAppBackend.Core.SetParameters.Entities.SetParameter", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("NameId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("WorkoutSetId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NameId");
-
-                    b.HasIndex("WorkoutSetId");
-
-                    b.ToTable("SetParameters");
-                });
-
-            modelBuilder.Entity("FitUpAppBackend.Core.Users.Entities.User", b =>
+            modelBuilder.Entity("FitUpAppBackend.Core.Identity.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,7 +88,7 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("DateOfBirth")
+                    b.Property<DateTimeOffset?>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
@@ -180,6 +141,45 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("FitUpAppBackend.Core.SetParameterNames.Entities.SetParameterName", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Name")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SetParameterNames");
+                });
+
+            modelBuilder.Entity("FitUpAppBackend.Core.SetParameters.Entities.SetParameter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("NameId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("WorkoutSetId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NameId");
+
+                    b.HasIndex("WorkoutSetId");
+
+                    b.ToTable("SetParameters");
                 });
 
             modelBuilder.Entity("FitUpAppBackend.Core.WorkoutExercises.Entities.WorkoutExercise", b =>
@@ -447,7 +447,7 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
 
             modelBuilder.Entity("FitUpAppBackend.Core.Workouts.Entities.Workout", b =>
                 {
-                    b.HasOne("FitUpAppBackend.Core.Users.Entities.User", "User")
+                    b.HasOne("FitUpAppBackend.Core.Identity.Entities.User", "User")
                         .WithMany("Workouts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,7 +467,7 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("FitUpAppBackend.Core.Users.Entities.User", null)
+                    b.HasOne("FitUpAppBackend.Core.Identity.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -476,7 +476,7 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("FitUpAppBackend.Core.Users.Entities.User", null)
+                    b.HasOne("FitUpAppBackend.Core.Identity.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -491,7 +491,7 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FitUpAppBackend.Core.Users.Entities.User", null)
+                    b.HasOne("FitUpAppBackend.Core.Identity.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -500,7 +500,7 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("FitUpAppBackend.Core.Users.Entities.User", null)
+                    b.HasOne("FitUpAppBackend.Core.Identity.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -512,14 +512,14 @@ namespace FitUpAppBackend.Infrastructure.DAL.EF.Migrations
                     b.Navigation("Exercises");
                 });
 
+            modelBuilder.Entity("FitUpAppBackend.Core.Identity.Entities.User", b =>
+                {
+                    b.Navigation("Workouts");
+                });
+
             modelBuilder.Entity("FitUpAppBackend.Core.SetParameterNames.Entities.SetParameterName", b =>
                 {
                     b.Navigation("SetParameters");
-                });
-
-            modelBuilder.Entity("FitUpAppBackend.Core.Users.Entities.User", b =>
-                {
-                    b.Navigation("Workouts");
                 });
 
             modelBuilder.Entity("FitUpAppBackend.Core.WorkoutExercises.Entities.WorkoutExercise", b =>
