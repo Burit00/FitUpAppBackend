@@ -1,8 +1,11 @@
 ﻿using FitUpAppBackend.Core.Identity;
 using FitUpAppBackend.Core.Identity.Entities;
+using FitUpAppBackend.Core.Integrations.Email.Services;
 using FitUpAppBackend.Infrastructure.DAL.EF;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using FitUpAppBackend.Infrastructure.DAL.Identity.Services;
+using FitUpAppBackend.Infrastructure.Integrations.Email.Configuration;
+using FitUpAppBackend.Infrastructure.Integrations.Email.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +33,9 @@ public static class Extensions
         services.AddEFContext(configuration);
         
         services.AddScoped<IIdentityService, IdentityService>();
+
+        services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
+        services.AddScoped<IEmailService, EmailService>();
 
         return services;
     }
