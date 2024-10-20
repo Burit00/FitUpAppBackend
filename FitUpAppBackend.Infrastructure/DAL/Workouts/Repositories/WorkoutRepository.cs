@@ -1,5 +1,4 @@
 using FitUpAppBackend.Core.Workouts.Entities;
-using FitUpAppBackend.Core.Workouts.Exceptions;
 using FitUpAppBackend.Core.Workouts.Repositories;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using Microsoft.EntityFrameworkCore;
@@ -20,29 +19,9 @@ public class WorkoutRepository : IWorkoutRepository
     public async Task<List<Workout>> GetAllAsync(CancellationToken cancellationToken)
         => await _workouts.ToListAsync(cancellationToken);
 
-    public Task<List<Workout>> GetAllForUserAsync(Guid userId, CancellationToken cancellationToken)
+    public Task<Workout> GetAsync(Guid workoutId, CancellationToken cancellationToken)
     {
-        var workouts = _workouts.Where(w => w.UserId.Equals(userId));
-        return workouts.ToListAsync(cancellationToken);
-    }
-
-
-    public async Task<Workout> GetAsync(Guid workoutId, CancellationToken cancellationToken)
-    {
-        var workout = await _workouts
-            .Include(w => w.WorkoutExercises)
-            .ThenInclude(we => we.Exercise)
-            .ThenInclude(e => e.Category)
-            .Include(w => w.WorkoutExercises)
-            .ThenInclude(we => we.WorkoutSets)
-            .ThenInclude(ws => ws.SetParameters)
-            .ThenInclude(sp => sp.SetParameterName)
-            .FirstOrDefaultAsync(w => w.Id.Equals(workoutId), cancellationToken);
-
-        if (workout is null)
-            throw new WorkoutNotFoundException();
-        
-        return workout;
+        throw new NotImplementedException();
     }
 
     public async Task<Guid> CreateAsync(Workout workout, CancellationToken cancellationToken)
@@ -52,7 +31,12 @@ public class WorkoutRepository : IWorkoutRepository
         return result.Entity.Id;
     }
 
-    public Task DeleteAsync(Workout workout, CancellationToken cancellationToken)
+    public Task UpdateAsync(Workout workout, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(Guid workoutId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

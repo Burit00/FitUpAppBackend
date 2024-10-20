@@ -10,7 +10,6 @@ public static class Extensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddCommands();
-        services.AddQueries();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         
         return services;

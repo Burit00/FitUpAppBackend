@@ -3,7 +3,7 @@ using FitUpAppBackend.Shared.Abstractions.Commands;
 
 namespace FitUpAppBackend.Application.Identity.Commands.SignUp;
 
-public class SignUpHandler: ICommandHandler<SignUpCommand>
+public sealed class SignUpHandler: ICommandHandler<SignUpCommand>
 {
     private readonly IIdentityService _identityService;
 

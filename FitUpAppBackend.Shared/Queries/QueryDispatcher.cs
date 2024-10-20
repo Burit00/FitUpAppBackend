@@ -12,12 +12,11 @@ public sealed class QueryDispatcher : IQueryDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public async Task<TResult> DispatchAsync<TResult>(IQuery<TResult> query, CancellationToken cancellationToken)
+    public async Task<TResult> DispatchAsync<TQuery, TResult>(TQuery query, CancellationToken cancellationToken) where TQuery : class, IQuery<TResult>
     {
         using var scope = _serviceProvider.CreateScope();
-        var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
-        var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IQueryHandler<IQuery<TResult>, TResult>;
+        var handler = scope.ServiceProvider.GetRequiredService<IQueryHandler<TQuery, TResult>>();
         
-        return await handler?.HandleAsync(query, cancellationToken)!;
+        return await handler.HandleAsync(query, cancellationToken);
     }
 }

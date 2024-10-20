@@ -4,7 +4,7 @@ using FitUpAppBackend.Shared.Abstractions.Commands;
 
 namespace FitUpAppBackend.Application.Identity.Commands.SignIn;
 
-public class SignInHandler : ICommandHandler<SignInCommand, JsonWebToken>
+public sealed class SignInHandler : ICommandHandler<SignInCommand, JsonWebToken>
 {
     private readonly IIdentityService _identityService;
 

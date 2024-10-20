@@ -1,6 +1,6 @@
 using FitUpAppBackend.Api.Attributes;
-using FitUpAppBackend.Application.Workouts.BrowseWorkouts;
 using FitUpAppBackend.Application.Workouts.DTO;
+using FitUpAppBackend.Application.Workouts.Queries;
 using FitUpAppBackend.Core.Identity.Static;
 using FitUpAppBackend.Shared.Abstractions.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +17,12 @@ public class WorkoutsController : BaseApiController
     }
 
     [HttpGet]
-    //TODO: naprawić autoryzacje
     [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<BrowseWorkoutsDto>>> GetWorkoutDates([FromQuery] BrowseWorkoutsQuery query, CancellationToken cancellationToken = default)
     {
-        var result = await _queryDispatcher.DispatchAsync(query, cancellationToken);
+        var result = await _queryDispatcher.DispatchAsync<BrowseWorkoutsQuery, IEnumerable<BrowseWorkoutsDto>>(query, cancellationToken);
         return Ok(result);
     }
 }

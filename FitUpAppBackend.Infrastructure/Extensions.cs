@@ -11,6 +11,7 @@ using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using FitUpAppBackend.Infrastructure.DAL.Identity.Services;
 using FitUpAppBackend.Infrastructure.DAL.Workouts.Repositories;
 using FitUpAppBackend.Infrastructure.Integrations.Email.Services;
+using FitUpAppBackend.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +57,8 @@ public static class Extensions
         services.AddScoped<IIdentityService, IdentityService>();
 
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+        
+        services.AddQueries();
 
         return services;
     }
