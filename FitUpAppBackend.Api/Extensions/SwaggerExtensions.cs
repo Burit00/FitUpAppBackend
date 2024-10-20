@@ -43,7 +43,11 @@ public static class SwaggerExtensions
     public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app)
     {
         app.UseSwagger();
-        app.UseSwaggerUI(opt => { opt.SwaggerEndpoint("/swagger/v1/swagger.json", "FitUP API V1"); });
+        app.UseSwaggerUI(opt =>
+        {
+            opt.SwaggerEndpoint("/swagger/v1/swagger.json", "FitUP API V1");
+            opt.EnablePersistAuthorization();
+        });
 
         return app;
     }
