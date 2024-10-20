@@ -18,6 +18,6 @@ public sealed class QueryDispatcher : IQueryDispatcher
         var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
         var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IQueryHandler<IQuery<TResult>, TResult>;
         
-        return await  handler?.HandleAsync(query, cancellationToken)!;
+        return await handler?.HandleAsync(query, cancellationToken)!;
     }
 }

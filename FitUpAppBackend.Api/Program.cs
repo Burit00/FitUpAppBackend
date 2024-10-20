@@ -14,10 +14,6 @@ builder.Services
 var app = builder.Build();
 
 app.UseApi();
-
-app.UseRouting();
-app.UseHttpsRedirection();
-app.UseCors("CorsPolicy");
 app.MapControllers();
 
 app.Run();

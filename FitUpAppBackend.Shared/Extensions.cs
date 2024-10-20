@@ -18,6 +18,11 @@ public static class Extensions
         services.Scan(s =>
             s.FromAssemblies(assembly)
                 .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+        services.Scan(s =>
+            s.FromAssemblies(assembly)
                 .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<,>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());

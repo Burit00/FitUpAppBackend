@@ -24,7 +24,6 @@
         <Folder Include="Identity\Entities\" />
         <Folder Include="WorkoutExercises\Exceptions\"/>
         <Folder Include="WorkoutSets\Exceptions\"/>
-        <Folder Include="Workouts\Exceptions\"/>
     </ItemGroup>
 
 </Project>
