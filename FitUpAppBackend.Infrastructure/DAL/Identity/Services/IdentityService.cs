@@ -1,7 +1,8 @@
 using System.Security.Claims;
-using FitUpAppBackend.Core.Identity;
+using FitUpAppBackend.Core.Identity.DTO;
 using FitUpAppBackend.Core.Identity.Entities;
 using FitUpAppBackend.Core.Identity.Exceptions;
+using FitUpAppBackend.Core.Identity.Services;
 using FitUpAppBackend.Core.Identity.Static;
 using FitUpAppBackend.Core.Integrations.Email.Services;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
@@ -13,14 +14,18 @@ namespace FitUpAppBackend.Infrastructure.DAL.Identity.Services;
 public class IdentityService : IIdentityService 
 {
     private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
     private readonly EFContext _dbContext;
     private readonly IEmailService _emailService;
+    private readonly ITokenService _tokenService;
 
-    public IdentityService(EFContext dbContext, UserManager<User> userManager, IEmailService emailService)
+    public IdentityService(EFContext dbContext, IEmailService emailService, ITokenService tokenService, UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _dbContext = dbContext;
-        _userManager = userManager;
         _emailService = emailService;
+        _tokenService = tokenService;
+        _userManager = userManager;
+        _signInManager = signInManager;
     }
     
     public async Task SignUpAsync(string email, string password, CancellationToken cancellationToken)
@@ -62,7 +67,30 @@ public class IdentityService : IIdentityService
         
         await transaction.CommitAsync(cancellationToken);
         
-        await SendUserVerificationEmailAsync(newUser);
+        // await SendUserVerificationEmailAsync(newUser);
+    }
+
+    public async Task<JsonWebToken> SignInAsync(string email, string password, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+
+        if (user is null) throw new BadUserCredentialsException();
+
+        var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+        if (!result.Succeeded) throw new BadUserCredentialsException();
+
+        var jwt = await GenerateJwtAsync(user, cancellationToken);
+        return jwt;
+    }
+
+    private async Task<JsonWebToken> GenerateJwtAsync(User user, CancellationToken cancellationToken)
+    {
+        var roles = await _userManager.GetRolesAsync(user);
+        var claims = await _userManager.GetClaimsAsync(user);
+        
+        var jwt = await _tokenService.GenerateJwtAsync(user.Id, user.Email, roles, claims, cancellationToken);
+
+        return jwt;
     }
 
     public async Task ConfirmEmailAsync(Guid userId, string token, CancellationToken cancellationToken)

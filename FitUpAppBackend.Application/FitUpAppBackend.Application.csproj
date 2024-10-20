@@ -16,8 +16,4 @@
       <ProjectReference Include="..\FitUpAppBackend.Shared\FitUpAppBackend.Shared.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Identity\Commands\" />
-    </ItemGroup>
-
 </Project>

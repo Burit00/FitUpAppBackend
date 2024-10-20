@@ -18,11 +18,13 @@ public static class Extensions
         services.Scan(s =>
             s.FromAssemblies(assembly)
                 .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
+                .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<,>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
         
         return services;
     }
+    
     public static IServiceCollection AddQueries(this IServiceCollection services)
     {
         services.AddSingleton<IQueryDispatcher, QueryDispatcher>();

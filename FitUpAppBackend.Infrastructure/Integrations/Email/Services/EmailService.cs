@@ -1,5 +1,5 @@
+using FitUpAppBackend.Core.Integrations.Email.Configurations;
 using FitUpAppBackend.Core.Integrations.Email.Services;
-using FitUpAppBackend.Infrastructure.Integrations.Email.Configuration;
 using MailKit.Net.Smtp;
 using MimeKit;
 

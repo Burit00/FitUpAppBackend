@@ -1,4 +1,4 @@
-namespace FitUpAppBackend.Infrastructure.Integrations.Email.Configuration;
+namespace FitUpAppBackend.Core.Integrations.Email.Configurations;
 
 public class EmailConfig
 {
