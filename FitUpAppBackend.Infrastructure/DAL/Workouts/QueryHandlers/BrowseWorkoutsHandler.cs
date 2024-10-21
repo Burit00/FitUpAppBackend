@@ -33,14 +33,13 @@ public sealed class BrowseWorkoutsHandler : IQueryHandler<BrowseWorkoutsQuery, I
                 .Where(w => query.Categories.All(c => w.WorkoutExercises.Any(we => we.Exercise.CategoryId.Equals(c))));
         }
 
-        if (query.YearStart is not null && query.YearEnd is not null)
-            workouts = workouts.Where(w => w.Date.Year >= query.YearStart && w.Date.Year <= query.YearEnd);
-        else if (query.YearStart is not null)
-            workouts = workouts.Where(w => w.Date.Year >= query.YearStart);
-        else if (query.YearStart is not null)
-            workouts = workouts.Where(w => w.Date.Year <= query.YearEnd);
+        if (query.DateStart is not null)
+            workouts = workouts.Where(w => w.Date >= query.DateStart.Value);
+        
+        if (query.DateEnd is not null)
+            workouts = workouts.Where(w => w.Date <= query.DateEnd.Value);
         
         var workoutList = await workouts.ToListAsync(cancellationToken);
-        return workoutList.Select(w => w.AsDto());
+        return workoutList.Select(w => new BrowseWorkoutsDto(w.Id, w.Date));
     }
 }

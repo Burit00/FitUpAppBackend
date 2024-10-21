@@ -1,4 +1,5 @@
 using FitUpAppBackend.Core.Workouts.Entities;
+using FitUpAppBackend.Core.Workouts.Exceptions;
 using FitUpAppBackend.Core.Workouts.Repositories;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,11 @@ public class WorkoutRepository : IWorkoutRepository
 
     public async Task<Guid> CreateAsync(Workout workout, CancellationToken cancellationToken)
     {
+        var isWorkoutExist = _workouts.Any(w => w.UserId.Equals(workout.UserId) && w.Date.Equals(workout.Date));
+    
+        if (isWorkoutExist)
+            throw new WorkoutForUserAlreadyExistException();
+        
         var result = await _workouts.AddAsync(workout, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return result.Entity.Id;

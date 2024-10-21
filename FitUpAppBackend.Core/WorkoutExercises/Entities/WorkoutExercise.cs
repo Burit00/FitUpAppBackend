@@ -22,8 +22,8 @@ public class WorkoutExercise : Entity
     public static WorkoutExercise Create(ushort orderIndex, Guid exerciseId)
         => new WorkoutExercise(orderIndex, exerciseId);
 
-    public void AddWorkoutSet(WorkoutSet workoutSet)
+    public void AddRangeWorkoutSet(IEnumerable<WorkoutSet> workoutSets)
     {
-        _workoutSets.Add(workoutSet);
+        _workoutSets.AddRange(workoutSets);
     }
 }

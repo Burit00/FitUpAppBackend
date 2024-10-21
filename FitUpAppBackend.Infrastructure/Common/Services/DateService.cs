@@ -4,9 +4,9 @@ namespace FitUpAppBackend.Infrastructure.Common.Services;
 
 public class DateService : IDateService
 {
-    public DateTimeOffset CurrentOffsetDate()
-     => DateTimeOffset.Now;
+    public DateTimeOffset CurrentDateTime() 
+        => DateTimeOffset.Now.DateTime;
 
-    public DateTime CurrentDate()
-    => DateTime.Now;
+    public DateTimeOffset CurrentDate() 
+        => DateTimeOffset.Now.Date;
 }

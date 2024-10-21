@@ -22,7 +22,7 @@ public class TokenService : ITokenService
     
     public async Task<JsonWebToken> GenerateJwtAsync(Guid userId, string email, ICollection<string> roles, ICollection<Claim> claims, CancellationToken cancellationToken)
     {
-        var now = _dateService.CurrentDate();
+        var now = _dateService.CurrentDateTime().DateTime;
         var expires = now.Add(_authConfig.Expires);
 
         var issuer = _authConfig.JwtIssuer;

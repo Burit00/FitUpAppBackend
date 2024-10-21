@@ -8,8 +8,10 @@ namespace FitUpAppBackend.Core.SetParameters.Entities;
 
 public sealed class SetParameter : Entity
 {
+    public Guid SetParameterNameId { get; private set; }
     public SetParameterName SetParameterName { get; private set; }
     public string Value { get; private set; }
+    public Guid WorkoutSetId { get; private set; }
     public WorkoutSet WorkoutSet { get; private set; }
 
     private SetParameter(string value)
