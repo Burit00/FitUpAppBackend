@@ -17,7 +17,7 @@ public class WorkoutRepository : IWorkoutRepository
         _workouts = _context.Workouts;
     }
 
-    public async Task<List<Workout>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         => await _workouts.ToListAsync(cancellationToken);
 
     public Task<Workout> GetAsync(Guid workoutId, CancellationToken cancellationToken)
@@ -37,7 +37,7 @@ public class WorkoutRepository : IWorkoutRepository
         return result.Entity.Id;
     }
 
-    public Task UpdateAsync(Workout workout, CancellationToken cancellationToken)
+    public Task<Guid> UpdateAsync(Workout workout, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

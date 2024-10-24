@@ -4,12 +4,11 @@ using FitUpAppBackend.Core.Identity.Entities;
 using FitUpAppBackend.Core.Identity.Services;
 using FitUpAppBackend.Core.Integrations.Email.Configurations;
 using FitUpAppBackend.Core.Integrations.Email.Services;
-using FitUpAppBackend.Core.Workouts.Repositories;
 using FitUpAppBackend.Infrastructure.Common.Services;
 using FitUpAppBackend.Infrastructure.DAL.EF;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
+using FitUpAppBackend.Infrastructure.DAL.Extensions;
 using FitUpAppBackend.Infrastructure.DAL.Identity.Services;
-using FitUpAppBackend.Infrastructure.DAL.Workouts.Repositories;
 using FitUpAppBackend.Infrastructure.Exceptions;
 using FitUpAppBackend.Infrastructure.Integrations.Email.Services;
 using FitUpAppBackend.Shared;
@@ -59,8 +58,7 @@ public static class Extensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IIdentityService, IdentityService>();
 
-        services.AddScoped<IWorkoutRepository, WorkoutRepository>();
-        
+        services.AddRepositories();
         services.AddQueries();
 
         return services;
