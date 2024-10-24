@@ -1,4 +1,6 @@
+using FitUpAppBackend.Core.Identity.Entities;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
+using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.AdminAccount;
 using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.UserRoles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,7 @@ public sealed class DatabaseInitializer(IServiceProvider serviceProvider) : IHos
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetService<EFContext>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         if (context is not null)
@@ -20,6 +23,7 @@ public sealed class DatabaseInitializer(IServiceProvider serviceProvider) : IHos
             await context.Database.MigrateAsync(cancellationToken);
             
             await UserRolesSeeder.SeedAsync(roleManager, context, cancellationToken);
+            await AdminAccountSeeder.SeedAsync(userManager, context, cancellationToken);
         }
 
     }
