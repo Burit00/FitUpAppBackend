@@ -1,4 +1,5 @@
 using FitUpAppBackend.Api.Attributes;
+using FitUpAppBackend.Application.Common;
 using FitUpAppBackend.Application.Workouts.Commands.CreateWorkout;
 using FitUpAppBackend.Application.Workouts.DTO;
 using FitUpAppBackend.Application.Workouts.Queries;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FitUpAppBackend.Api.Controllers.Workouts;
 
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class WorkoutsController : BaseApiController
 {
     private readonly IQueryDispatcher _queryDispatcher;
@@ -23,18 +25,18 @@ public class WorkoutsController : BaseApiController
     [HttpGet]
     [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<BrowseWorkoutsDto>>> GetWorkoutDates([FromQuery] BrowseWorkoutsQuery query, CancellationToken cancellationToken = default)
     {
         var result = await _queryDispatcher.DispatchAsync<BrowseWorkoutsQuery, IEnumerable<BrowseWorkoutsDto>>(query, cancellationToken);
         return Ok(result);
     }
-
+    
     [HttpGet("{workoutId:Guid}")]
     [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<WorkoutDto>> GetWorkoutDates([FromRoute] Guid workoutId, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<WorkoutDto>> GetWorkout([FromRoute] Guid workoutId, CancellationToken cancellationToken = default)
     {
         var result = await _queryDispatcher.DispatchAsync<GetWorkoutQuery, WorkoutDto>(new GetWorkoutQuery(workoutId), cancellationToken);
         return Ok(result);
@@ -43,10 +45,10 @@ public class WorkoutsController : BaseApiController
     [HttpPost]
     [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Guid>> CreateWorkout([FromBody] CreateWorkoutCommand request, CancellationToken cancellationToken = default)
     {
-        var result = await _commandDispatcher.DispatchAsync<CreateWorkoutCommand, Guid>(request, cancellationToken);
-        return Created("xd", result);
+        var result = await _commandDispatcher.DispatchAsync<CreateWorkoutCommand, CreateOrUpdateResponse>(request, cancellationToken);
+        return CreatedAtAction(nameof(GetWorkout), new {workoutId = result.Id}, result.Id);
     }
 }
