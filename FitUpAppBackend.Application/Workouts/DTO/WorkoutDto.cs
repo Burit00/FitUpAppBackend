@@ -6,13 +6,12 @@ public sealed class WorkoutDto
 {
     public Guid Id { get; set; }
     public List<WorkoutExerciseDto> Exercises { get; set; }
-    public DateTimeOffset Date => _date.Date;
-
-    private DateTimeOffset _date;
+    public DateTime Date { get; set; }
+    
     public WorkoutDto(Workout workout)
     {
         Id = workout.Id;
-        _date = workout.Date;
+        Date = workout.Date;
         Exercises = workout.WorkoutExercises
             .Select(we => new WorkoutExerciseDto(we))
             .ToList();
