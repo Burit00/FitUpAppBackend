@@ -13,7 +13,7 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseApi();
+app.UseInfrastructure().UseApi();
 app.MapControllers();
 
 app.Run();

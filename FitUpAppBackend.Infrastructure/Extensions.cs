@@ -10,8 +10,10 @@ using FitUpAppBackend.Infrastructure.DAL.EF;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using FitUpAppBackend.Infrastructure.DAL.Identity.Services;
 using FitUpAppBackend.Infrastructure.DAL.Workouts.Repositories;
+using FitUpAppBackend.Infrastructure.Exceptions;
 using FitUpAppBackend.Infrastructure.Integrations.Email.Services;
 using FitUpAppBackend.Shared;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +49,7 @@ public static class Extensions
         services.AddSingleton(authConfig);
 
         services.AddHttpContextAccessor();
+        services.AddSingleton<ExceptionMiddleware>();
         
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
@@ -61,5 +64,12 @@ public static class Extensions
         services.AddQueries();
 
         return services;
+    }
+
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<ExceptionMiddleware>();
+        
+        return app;
     }
 }

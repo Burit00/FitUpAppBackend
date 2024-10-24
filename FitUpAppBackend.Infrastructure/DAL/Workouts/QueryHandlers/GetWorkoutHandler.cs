@@ -21,28 +21,22 @@ public sealed class GetWorkoutHandler : IQueryHandler<GetWorkoutQuery, WorkoutDt
     
     public async Task<WorkoutDto> HandleAsync(GetWorkoutQuery query, CancellationToken cancellationToken)
     {
+        var isWorkoutExist = await _context.Workouts.AnyAsync(w => w.UserId.Equals(_currentUserService.UserId) && w.Id.Equals(query.WorkoutId), cancellationToken);
+        
+        if (!isWorkoutExist)
+            throw new WorkoutNotFoundException();
+        
         var workout = await _context.Workouts
             .Include(w => w.WorkoutExercises)
             .ThenInclude(we => we.Exercise)
             .ThenInclude(e => e.Category)
+            .Include(w => w.WorkoutExercises)
+            .ThenInclude(we => we.WorkoutSets)
+            .ThenInclude(ws => ws.SetParameters)
+            .ThenInclude(sp => sp.SetParameterName)
             .Where(w => _currentUserService.UserId.Equals(w.UserId))
             .FirstOrDefaultAsync(w => w.Id.Equals(query.WorkoutId), cancellationToken);
-
-
-        if (workout is null)
-            throw new WorkoutNotFoundException();
         
-        foreach (var workoutExercise in workout.WorkoutExercises)
-        {
-            var workoutSets = _context.WorkoutSets
-                .Include(ws => ws.SetParameters)
-                .ThenInclude(sp => sp.SetParameterName)
-                .Where(ws => ws.WorkoutExerciseId == workoutExercise.Id)
-                .ToList();
-            
-            workoutExercise.AddRangeWorkoutSet(workoutSets);
-        }
-
         return new WorkoutDto(workout);
     }
 }

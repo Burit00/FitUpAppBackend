@@ -16,7 +16,7 @@ public sealed class Workout : Entity
     private Workout(Guid userId, DateTimeOffset date)
     {
         UserId = userId;
-        Date = date;
+        Date = date.Date;
     }
 
     public static Workout Create(Guid userId, DateTimeOffset date)

@@ -1,5 +1,4 @@
 using System.Text;
-using FitUpAppBackend.Api.Filters;
 using FitUpAppBackend.Core.Identity.Configuration;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,7 +38,7 @@ public static class Extensions
         
         services.AddAuthorization();
         services.AddCorsPolicy(configuration);
-        services.AddControllers(options => options.Filters.Add(new ExceptionFilter()));
+        services.AddControllers();
         services.AddRouting(options => options.LowercaseUrls = true);
         services.AddFluentValidationAutoValidation();
         services.AddSwaggerConfig();

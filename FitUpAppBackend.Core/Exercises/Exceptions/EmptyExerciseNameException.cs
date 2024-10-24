@@ -2,9 +2,4 @@
 
 namespace FitUpAppBackend.Core.Exercises.Exceptions;
 
-public class EmptyExerciseNameException: FitUpException
-{
-    public EmptyExerciseNameException() : base("Exercise name cannot be empty.")
-    {
-    }
-}
+public class EmptyExerciseNameException() : BadRequestFitUpException("Exercise name cannot be empty.");

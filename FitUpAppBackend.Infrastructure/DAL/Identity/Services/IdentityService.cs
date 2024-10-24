@@ -46,7 +46,7 @@ public class IdentityService : IIdentityService
         var createdUser = await _userManager.CreateAsync(newUser, password);
 
         if (!createdUser.Succeeded)
-            throw new CreateUserException(createdUser.Errors);
+            throw new CreateUserException();
 
         var addRoleResult = await _userManager.AddToRoleAsync(newUser, UserRoles.User);
         if(!addRoleResult.Succeeded)
