@@ -1,7 +1,9 @@
 using System.Text;
 using FitUpAppBackend.Core.Identity.Configuration;
+using FitUpAppBackend.Shared.ParameterTransformers;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FitUpAppBackend.Api.Extensions;
@@ -13,7 +15,7 @@ public static class Extensions
         //TODO: Move auth section to infrastructure layer
         var authConfig = new AuthConfig();
         configuration.GetSection("AuthConfig").Bind(authConfig);
-        
+
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,11 +37,13 @@ public static class Extensions
                 ClockSkew = TimeSpan.Zero
             };
         });
-        
+
         services.AddAuthorization();
         services.AddCorsPolicy(configuration);
-        services.AddControllers();
-        services.AddRouting(options => options.LowercaseUrls = true);
+        services.AddControllers(options => options.Conventions.Add(
+            new RouteTokenTransformerConvention(new SlugifyParameterTransformer())
+        ));
+        services.AddRouting(options => { options.LowercaseUrls = true; });
         services.AddFluentValidationAutoValidation();
         services.AddSwaggerConfig();
 
@@ -54,7 +58,7 @@ public static class Extensions
         app.UseHttpsRedirection();
         app.UseCors("CorsPolicy");
         app.UseSwaggerConfig();
-        
+
         return app;
     }
 }

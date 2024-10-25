@@ -15,4 +15,10 @@
         <ProjectReference Include="..\FitUpAppBackend.Shared.Abstractions\FitUpAppBackend.Shared.Abstractions.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
+        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.3\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
