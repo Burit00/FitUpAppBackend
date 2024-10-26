@@ -22,7 +22,6 @@
         <Folder Include="SetParameterNames\Exceptions\" />
         <Folder Include="Identity\Entities\" />
         <Folder Include="SetParameters\Exceptions\" />
-        <Folder Include="WorkoutExercises\Exceptions\"/>
         <Folder Include="WorkoutSets\Exceptions\"/>
     </ItemGroup>
 

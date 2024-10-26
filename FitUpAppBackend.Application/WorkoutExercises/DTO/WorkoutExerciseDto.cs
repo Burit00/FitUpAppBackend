@@ -7,7 +7,7 @@ public sealed class WorkoutExerciseDto
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Category { get; set; }
-    public uint OrderIndex { get; set; }
+    public int OrderIndex { get; set; }
     public List<WorkoutSetDto> Sets { get; set; }
     
     public WorkoutExerciseDto(WorkoutExercise workoutExercise)
