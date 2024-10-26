@@ -18,7 +18,7 @@ public class CreateExerciseHandler : ICommandHandler<CreateExerciseCommand, Crea
         CancellationToken cancellationToken)
     {
         var exercise = Exercise.Create(command.Name, command.CategoryId);
-        var result = await _exerciseRepository.CreateAsync(exercise, cancellationToken);
+        var result = await _exerciseRepository.CreateAsync(exercise, command.SetParameterNameIds, cancellationToken);
         
         return new CreateOrUpdateResponse(result);
     }

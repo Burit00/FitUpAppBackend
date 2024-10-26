@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FitUpAppBackend.Api.Controllers.ExerciseCategories;
 
-[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class ExerciseCategoriesController : BaseApiController
 {
     private readonly ICommandDispatcher _commandDispatcher;
@@ -28,6 +27,7 @@ public class ExerciseCategoriesController : BaseApiController
     [ApiAuthorize(Roles = UserRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Guid>> Create([FromBody] CreateExerciseCategoryCommand command, CancellationToken cancellationToken = default)
     {
         var result =
@@ -40,6 +40,7 @@ public class ExerciseCategoriesController : BaseApiController
     [ApiAuthorize(Roles = UserRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Guid>> Update([FromBody] UpdateExerciseCategoryCommand command, CancellationToken cancellationToken = default)
     {
         var result =

@@ -17,20 +17,28 @@ public class ExerciseRepository : IExerciseRepository
         _exercises = context.Exercises;
     }
 
-    public async Task<Guid> CreateAsync(Exercise exercise, CancellationToken cancellationToken)
+    public async Task<Guid> CreateAsync(Exercise exercise, IEnumerable<Guid> setParameterNameIds, CancellationToken cancellationToken)
     {
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-
+        
+        
         var doesExerciseAlreadyExists = await _exercises.AnyAsync(e
             => e.CategoryId.Equals(exercise.CategoryId) && e.Name.Equals(exercise.Name), cancellationToken);
 
         if (doesExerciseAlreadyExists)
             throw new ExerciseAlreadyExistsException(exercise.Name);
 
+        var setParameterNames = await _context.SetParameterNames
+            .Where(x => setParameterNameIds.Contains(x.Id))
+            .ToListAsync(cancellationToken);
+        
+        exercise.AddSetParameterNameRange(setParameterNames);
+        
         var result = await _exercises.AddAsync(exercise, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         
         await transaction.CommitAsync(cancellationToken);
+        
         return result.Entity.Id;
     }
 
@@ -38,6 +46,7 @@ public class ExerciseRepository : IExerciseRepository
     {
         var result = _exercises.Update(exercise);
         await _context.SaveChangesAsync(cancellationToken);
+        
         return result.Entity.Id;
     }
 

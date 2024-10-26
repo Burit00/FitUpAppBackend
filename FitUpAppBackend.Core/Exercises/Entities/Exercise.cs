@@ -28,4 +28,9 @@ public sealed class Exercise : Entity
         Name = name ?? Name;
         CategoryId = categoryId ?? CategoryId;
     }
+
+    public void AddSetParameterNameRange(IEnumerable<SetParameterName> setParameterNames)
+    {
+        _setParameters.AddRange(setParameterNames);
+    }
 }
