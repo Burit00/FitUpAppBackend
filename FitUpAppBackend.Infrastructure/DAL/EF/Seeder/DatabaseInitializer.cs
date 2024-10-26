@@ -1,6 +1,7 @@
 using FitUpAppBackend.Core.Identity.Entities;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.AdminAccount;
+using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.SetParameterNames;
 using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.UserRoles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ public sealed class DatabaseInitializer(IServiceProvider serviceProvider) : IHos
 
             await UserRolesSeeder.SeedAsync(roleManager, context, cancellationToken);
             await AdminAccountSeeder.SeedAsync(userManager, context, cancellationToken);
+            await SetParameterNamesSeeder.SeedAsync(context, cancellationToken);
         }
     }
 

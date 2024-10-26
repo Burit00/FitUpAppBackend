@@ -1,3 +1,4 @@
+using FitUpAppBackend.Application.SetParameters.DTO;
 using FitUpAppBackend.Core.WorkoutSets.Entities;
 
 namespace FitUpAppBackend.Application.Workouts.DTO;

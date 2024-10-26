@@ -1,6 +1,7 @@
+using FitUpAppBackend.Application.Workouts.DTO;
 using FitUpAppBackend.Core.WorkoutExercises.Entities;
 
-namespace FitUpAppBackend.Application.Workouts.DTO;
+namespace FitUpAppBackend.Application.WorkoutExercises.DTO;
 
 public sealed class WorkoutExerciseDto
 {
