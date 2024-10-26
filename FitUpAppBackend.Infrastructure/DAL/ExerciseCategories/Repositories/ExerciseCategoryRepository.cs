@@ -53,7 +53,10 @@ public class ExerciseCategoryRepository : IExerciseCategoryRepository
 
     public async Task<IEnumerable<ExerciseCategory>> GetAllAsync(string search, CancellationToken cancellationToken)
     {
-        var exerciseCategories = await _exerciseCategories.Where(ec => ec.Name.Contains(search)).ToListAsync(cancellationToken);
+        var exerciseCategories = await _exerciseCategories
+            .Where(ec => ec.Name.ToLower().Contains(search.ToLower()))
+            .ToListAsync(cancellationToken);
+        
         return exerciseCategories;
     }
 }

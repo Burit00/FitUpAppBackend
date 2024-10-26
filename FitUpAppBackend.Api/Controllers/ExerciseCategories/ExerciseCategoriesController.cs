@@ -36,7 +36,7 @@ public class ExerciseCategoriesController : BaseApiController
         return CreatedAtAction(nameof(GetById), new {exerciseCategoryId = result.Id}, result.Id);
     }
 
-    [HttpPut]
+    [HttpPut("{exerciseCategoryId:Guid}")]
     [ApiAuthorize(Roles = UserRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,7 +50,7 @@ public class ExerciseCategoriesController : BaseApiController
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ExerciseCategoryDto>>> GetAll([FromRoute] GetExerciseCategoriesQuery query, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<IEnumerable<ExerciseCategoryDto>>> GetAll([FromQuery] GetExerciseCategoriesQuery query, CancellationToken cancellationToken = default)
     {
         var result =
             await _queryDispatcher.DispatchAsync<GetExerciseCategoriesQuery, IEnumerable<ExerciseCategoryDto>>(query, cancellationToken);
