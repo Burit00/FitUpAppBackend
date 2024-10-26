@@ -16,7 +16,6 @@
 
     <ItemGroup>
         <Folder Include="Exercises\Entities\"/>
-        <Folder Include="Exercises\Exceptions\"/>
         <Folder Include="ExerciseCategories\Entities\"/>
         <Folder Include="ExerciseCategories\Exceptions\"/>
         <Folder Include="SetParameterNames\Entities\" />
