@@ -21,15 +21,12 @@ public sealed class DatabaseInitializer(IServiceProvider serviceProvider) : IHos
         if (context is not null)
         {
             await context.Database.MigrateAsync(cancellationToken);
-            
+
             await UserRolesSeeder.SeedAsync(roleManager, context, cancellationToken);
             await AdminAccountSeeder.SeedAsync(userManager, context, cancellationToken);
         }
-
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.CompletedTask;
 }
