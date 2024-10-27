@@ -39,19 +39,7 @@ public class WorkoutExerciseRepository : IWorkoutExerciseRepository
         if (doesExerciseExistsOnThisDay)
             throw new WorkoutAlreadyContainsThisExerciseException();
 
-        if (workoutExercise.OrderIndex > exercisesFromWorkout.Count)
-            workoutExercise.Update(exercisesFromWorkout.Count);
-        else if (workoutExercise.OrderIndex < 0)
-            workoutExercise.Update(0);
-        else
-        {
-            var initialOrderIndex = workoutExercise.OrderIndex;
-            foreach (var exerciseFromWorkout in exercisesFromWorkout)
-            {
-                if (exerciseFromWorkout.OrderIndex > initialOrderIndex)
-                    exerciseFromWorkout.Update(exerciseFromWorkout.OrderIndex + 1);
-            }
-        }
+        CorrectOrder(workoutExercise, exercisesFromWorkout);
 
         _workoutExercises.UpdateRange(exercisesFromWorkout);
         var result = await _workoutExercises.AddAsync(workoutExercise, cancellationToken);
@@ -73,5 +61,31 @@ public class WorkoutExerciseRepository : IWorkoutExerciseRepository
         
         _workoutExercises.Remove(workoutExercise);
         await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    private void CorrectOrder(WorkoutExercise workoutExercise, List<WorkoutExercise> exercisesFromWorkout)
+    {
+        if (workoutExercise.OrderIndex > exercisesFromWorkout.Count)
+            workoutExercise.Update(exercisesFromWorkout.Count);
+        else if (workoutExercise.OrderIndex < 0)
+            workoutExercise.Update(0);
+        else
+        {
+            var initialOrderIndex = workoutExercise.OrderIndex;
+            foreach (var exerciseFromWorkout in exercisesFromWorkout)
+            {
+                if (exerciseFromWorkout.OrderIndex > initialOrderIndex)
+                    exerciseFromWorkout.Update(exerciseFromWorkout.OrderIndex + 1);
+            }
+        }
+        
+        var tempArr = new List<WorkoutExercise>();
+        tempArr.Add(workoutExercise);
+        tempArr.AddRange(exercisesFromWorkout);
+        
+        foreach (var tempWorkoutSet in tempArr.OrderBy(ws => ws.OrderIndex))
+        {
+            tempWorkoutSet.Update(tempArr.IndexOf(tempWorkoutSet));
+        }
     }
 }

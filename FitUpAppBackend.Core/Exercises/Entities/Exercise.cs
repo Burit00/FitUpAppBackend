@@ -1,6 +1,7 @@
 ﻿using FitUpAppBackend.Core.Abstractions.Entities;
 using FitUpAppBackend.Core.ExerciseCategories.Entities;
 using FitUpAppBackend.Core.SetParameterNames.Entities;
+using FitUpAppBackend.Core.WorkoutExercises.Entities;
 
 namespace FitUpAppBackend.Core.Exercises.Entities;
 
@@ -13,6 +14,9 @@ public sealed class Exercise : Entity
 
     private List<SetParameterName> _setParameters = new();
     public IReadOnlyCollection<SetParameterName> SetParameters => _setParameters;
+    
+    private List<WorkoutExercise> _workoutExercises = new();
+    public IReadOnlyCollection<WorkoutExercise> WorkoutExercises => _workoutExercises;
     
     private Exercise(string name, Guid categoryId)
     {

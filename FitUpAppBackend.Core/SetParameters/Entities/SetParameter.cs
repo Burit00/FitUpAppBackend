@@ -12,13 +12,14 @@ public sealed class SetParameter : Entity
     public Guid WorkoutSetId { get; private set; }
     public WorkoutSet WorkoutSet { get; private set; }
 
-    private SetParameter(string value)
+    private SetParameter(Guid setParameterNameId, string value)
     {
+        SetParameterNameId = setParameterNameId;
         Value = value;
     }
 
-    public static SetParameter Create(string value)
-        => new SetParameter(value);
+    public static SetParameter Create(Guid setParameterNameId, string value)
+        => new SetParameter(setParameterNameId, value);
 
     public void UpdateValue(string value)
     {
