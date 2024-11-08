@@ -1,8 +1,4 @@
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using FitUpAppBackend.Core.ExerciseCategories.Entities;
 using FitUpAppBackend.Core.Exercises.Entities;
 using FitUpAppBackend.Core.Identity.Entities;
@@ -11,6 +7,10 @@ using FitUpAppBackend.Core.SetParameters.Entities;
 using FitUpAppBackend.Core.WorkoutExercises.Entities;
 using FitUpAppBackend.Core.Workouts.Entities;
 using FitUpAppBackend.Core.WorkoutSets.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitUpAppBackend.Infrastructure.DAL.EF.Context;
 
@@ -33,5 +33,25 @@ public class EFContext : IdentityDbContext<User, IdentityRole<Guid>, Guid, Ident
     public EFContext(DbContextOptions<EFContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
     {
         _ = Guid.TryParse(httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier), out _userId);
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        
+        builder.Entity<SetParameter>()
+            .HasOne(e => e.WorkoutSet)
+            .WithMany(e => e.SetParameters)
+            .OnDelete(DeleteBehavior.ClientCascade);
+        
+        builder.Entity<WorkoutSet>()
+            .HasOne(e => e.WorkoutExercise)
+            .WithMany(e => e.WorkoutSets)
+            .OnDelete(DeleteBehavior.ClientCascade);
+        
+        builder.Entity<WorkoutExercise>()
+            .HasOne(e => e.Workout)
+            .WithMany(e => e.WorkoutExercises)
+            .OnDelete(DeleteBehavior.ClientCascade);
     }
 }
