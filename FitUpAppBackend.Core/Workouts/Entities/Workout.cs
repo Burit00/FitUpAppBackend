@@ -11,7 +11,7 @@ public sealed class Workout : Entity
     public DateTime Date { get; private set; }
     public IReadOnlyCollection<WorkoutExercise> WorkoutExercises => _workoutExercises;
     
-    private List<WorkoutExercise> _workoutExercises => new();
+    private List<WorkoutExercise> _workoutExercises = new();
     
     private Workout(Guid userId, DateTime date)
     {
