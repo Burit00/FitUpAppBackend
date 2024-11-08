@@ -46,7 +46,7 @@ public class TokenService : ITokenService
         return new JsonWebToken
         {
             AccessToken = token,
-            Expires = new DateTimeOffset(expires).ToUnixTimeSeconds(),
+            Expires = new DateTimeOffset(expires).ToUnixTimeMilliseconds(),
             UserId = userId,
             Email = email,
             Roles = roles,
