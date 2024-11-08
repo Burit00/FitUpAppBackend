@@ -3,9 +3,7 @@ using FitUpAppBackend.Shared.Abstractions.Queries;
 
 namespace FitUpAppBackend.Application.Exercises.Queries.GetExercises;
 
-public sealed class GetExercisesQuery
+public sealed record GetExercisesQuery(string? Search = "", IEnumerable<Guid>? ExerciseCategoryIds = null)
     : IQuery<IEnumerable<ExerciseDto>>
 {
-    public string Search { get; } = "";
-    public IEnumerable<Guid> ExerciseCategoryIds { get; } = new List<Guid>();
 }

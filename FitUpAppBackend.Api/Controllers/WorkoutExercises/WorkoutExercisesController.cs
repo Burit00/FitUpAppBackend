@@ -26,10 +26,10 @@ public class WorkoutExercisesController : BaseApiController
     [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Guid>> Create([FromBody] CreateWorkoutExerciseCommand command, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<CreateOrUpdateResponse>> Create([FromBody] CreateWorkoutExerciseCommand command, CancellationToken cancellationToken = default)
     {
         var result = await _commandDispatcher.DispatchAsync<CreateWorkoutExerciseCommand, CreateOrUpdateResponse>(command, cancellationToken);
-        return CreatedAtAction("", new { workoutExerciseId = result.Id }, result.Id);
+        return CreatedAtAction("", new { workoutExerciseId = result.Id }, result);
     }
 
     [HttpGet("{workoutExerciseId:guid}")]
@@ -46,7 +46,7 @@ public class WorkoutExercisesController : BaseApiController
     [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Guid>> Delete([FromRoute] Guid workoutExerciseId, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Delete([FromRoute] Guid workoutExerciseId, CancellationToken cancellationToken = default)
     {
         await _commandDispatcher.DispatchAsync(new DeleteWorkoutExerciseCommand(workoutExerciseId), cancellationToken);
         return Ok();

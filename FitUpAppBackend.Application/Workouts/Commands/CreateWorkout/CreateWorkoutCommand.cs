@@ -4,5 +4,6 @@ using FitUpAppBackend.Shared.Abstractions.Commands;
 namespace FitUpAppBackend.Application.Workouts.Commands.CreateWorkout;
 
 public sealed record CreateWorkoutCommand(
-        DateTime Date
+        DateTime Date,
+        IEnumerable<Guid> ExerciseIds
     ) : ICommand<CreateOrUpdateResponse>;

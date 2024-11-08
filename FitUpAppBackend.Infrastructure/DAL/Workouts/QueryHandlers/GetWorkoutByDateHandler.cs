@@ -8,20 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitUpAppBackend.Infrastructure.DAL.Workouts.QueryHandlers;
 
-public sealed class GetWorkoutHandler : IQueryHandler<GetWorkoutQuery, WorkoutDto>
+public sealed class GetWorkoutByDateHandler : IQueryHandler<GetWorkoutByDateQuery, WorkoutDto>
 {
     private readonly EFContext _context;
     private readonly ICurrentUserService _currentUserService;
 
-    public GetWorkoutHandler(EFContext context, ICurrentUserService currentUserService)
+    public GetWorkoutByDateHandler(EFContext context, ICurrentUserService currentUserService)
     {
         _context = context;
         _currentUserService = currentUserService;
     }
     
-    public async Task<WorkoutDto> HandleAsync(GetWorkoutQuery query, CancellationToken cancellationToken)
+    public async Task<WorkoutDto> HandleAsync(GetWorkoutByDateQuery query, CancellationToken cancellationToken)
     {
-        var isWorkoutExist = await _context.Workouts.AnyAsync(w => w.UserId.Equals(_currentUserService.UserId) && w.Id.Equals(query.WorkoutId), cancellationToken);
+        var isWorkoutExist = await _context.Workouts.AnyAsync(w => w.UserId.Equals(_currentUserService.UserId) && w.Date.Date.Equals(query.Date), cancellationToken);
         
         if (!isWorkoutExist)
             throw new WorkoutNotFoundException();
@@ -34,8 +34,8 @@ public sealed class GetWorkoutHandler : IQueryHandler<GetWorkoutQuery, WorkoutDt
             .ThenInclude(we => we.WorkoutSets)
             .ThenInclude(ws => ws.SetParameters)
             .ThenInclude(sp => sp.SetParameterName)
-            .Where(w => _currentUserService.UserId.Equals(w.UserId))
-            .FirstOrDefaultAsync(w => w.Id.Equals(query.WorkoutId), cancellationToken);
+            .Where(w => _currentUserService.UserId.Equals(w.UserId) && w.Date.Date.Equals(query.Date))
+            .FirstAsync(cancellationToken);
         
         return new WorkoutDto(workout);
     }

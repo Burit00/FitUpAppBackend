@@ -28,12 +28,12 @@ public class ExerciseCategoriesController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<Guid>> Create([FromBody] CreateExerciseCategoryCommand command, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<CreateOrUpdateResponse>> Create([FromBody] CreateExerciseCategoryCommand command, CancellationToken cancellationToken = default)
     {
         var result =
             await _commandDispatcher.DispatchAsync<CreateExerciseCategoryCommand, CreateOrUpdateResponse>(command, cancellationToken);
        
-        return CreatedAtAction(nameof(GetById), new {exerciseCategoryId = result.Id}, result.Id);
+        return CreatedAtAction(nameof(GetById), new {exerciseCategoryId = result.Id}, result);
     }
 
     [HttpPut("{exerciseCategoryId:Guid}")]
@@ -41,12 +41,12 @@ public class ExerciseCategoriesController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<Guid>> Update([FromBody] UpdateExerciseCategoryCommand command, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<CreateOrUpdateResponse>> Update([FromBody] UpdateExerciseCategoryCommand command, CancellationToken cancellationToken = default)
     {
         var result =
             await _commandDispatcher.DispatchAsync<UpdateExerciseCategoryCommand, CreateOrUpdateResponse>(command, cancellationToken);
        
-        return Ok(result.Id);
+        return Ok(result);
     }
 
     [HttpGet]

@@ -26,10 +26,10 @@ public class WorkoutsController : BaseApiController
     [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Guid>> Create([FromBody] CreateWorkoutCommand request, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<CreateOrUpdateResponse>> Create([FromBody] CreateWorkoutCommand request, CancellationToken cancellationToken = default)
     {
         var result = await _commandDispatcher.DispatchAsync<CreateWorkoutCommand, CreateOrUpdateResponse>(request, cancellationToken);
-        return CreatedAtAction(nameof(GetById), new {workoutId = result.Id}, result.Id);
+        return CreatedAtAction(nameof(GetById), new {workoutId = result.Id}, result);
     }
 
     [HttpGet]
@@ -48,7 +48,17 @@ public class WorkoutsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WorkoutDto>> GetById([FromRoute] Guid workoutId, CancellationToken cancellationToken = default)
     {
-        var result = await _queryDispatcher.DispatchAsync<GetWorkoutQuery, WorkoutDto>(new GetWorkoutQuery(workoutId), cancellationToken);
+        var result = await _queryDispatcher.DispatchAsync<GetWorkoutByIdQuery, WorkoutDto>(new GetWorkoutByIdQuery(workoutId), cancellationToken);
+        return Ok(result);
+    }
+    
+    [HttpGet("{date:datetime}")]
+    [ApiAuthorize(Roles = UserRoles.User)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<WorkoutDto>> GetByDate([FromRoute] DateTime date, CancellationToken cancellationToken = default)
+    {
+        var result = await _queryDispatcher.DispatchAsync<GetWorkoutByDateQuery, WorkoutDto>(new GetWorkoutByDateQuery(date), cancellationToken);
         return Ok(result);
     }
 }
