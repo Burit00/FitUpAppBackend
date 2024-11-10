@@ -1,8 +1,11 @@
 using FitUpAppBackend.Core.Identity.Entities;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.AdminAccount;
+using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.CategoriesAndExercises;
 using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.SetParameterNames;
 using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.UserRoles;
+using FitUpAppBackend.Infrastructure.DAL.EF.Seeder.Users;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace FitUpAppBackend.Infrastructure.DAL.EF.Seeder;
 
-public sealed class DatabaseInitializer(IServiceProvider serviceProvider) : IHostedService
+public sealed class DatabaseInitializer(IServiceProvider serviceProvider, IWebHostEnvironment environment) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -24,8 +27,16 @@ public sealed class DatabaseInitializer(IServiceProvider serviceProvider) : IHos
             await context.Database.MigrateAsync(cancellationToken);
 
             await UserRolesSeeder.SeedAsync(roleManager, context, cancellationToken);
-            await AdminAccountSeeder.SeedAsync(userManager, context, cancellationToken);
+            
+            await AdminAccountSeeder.SeedAsync(userManager);
+            if (environment.IsDevelopment())
+            {
+                await TestUserAccountSeeder.SeedAsync(userManager);
+            }
+            
             await SetParameterNamesSeeder.SeedAsync(context, cancellationToken);
+            await CategoriesAndExercisesSeeder.CategoriesSeedAsync(context, cancellationToken);
+            await CategoriesAndExercisesSeeder.ExerciseSeedAsync(context, cancellationToken);
         }
     }
 

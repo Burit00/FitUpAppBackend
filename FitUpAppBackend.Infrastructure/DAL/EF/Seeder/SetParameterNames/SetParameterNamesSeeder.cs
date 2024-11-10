@@ -8,8 +8,6 @@ public static class SetParameterNamesSeeder
 {
     public static async Task SeedAsync(EFContext context, CancellationToken cancellationToken)
     {
-        await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
-
         var setParameterNames = Core.SetParameterNames.Static.SetParameterNames.Parameters;
         var setParameterNamesFromDb = await context.SetParameterNames.ToListAsync(cancellationToken);
         var setParameterNamesToCreate = setParameterNames
@@ -18,7 +16,5 @@ public static class SetParameterNamesSeeder
 
         await context.SetParameterNames.AddRangeAsync(setParameterNamesToCreate, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
-        
-        await transaction.CommitAsync(cancellationToken);
     }
 }

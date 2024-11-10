@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FitUpAppBackend.Api.Controllers.Workouts;
 
+[ApiAuthorize(Roles = UserRoles.User)]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class WorkoutsController : BaseApiController
 {
@@ -23,7 +24,6 @@ public class WorkoutsController : BaseApiController
     }
 
     [HttpPost]
-    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CreateOrUpdateResponse>> Create([FromBody] CreateWorkoutCommand request, CancellationToken cancellationToken = default)
@@ -33,7 +33,6 @@ public class WorkoutsController : BaseApiController
     }
 
     [HttpGet]
-    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<BrowseWorkoutsDto>>> GetWorkoutDates([FromQuery] BrowseWorkoutsQuery query, CancellationToken cancellationToken = default)
@@ -43,7 +42,6 @@ public class WorkoutsController : BaseApiController
     }
     
     [HttpGet("{workoutId:Guid}")]
-    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WorkoutDto>> GetById([FromRoute] Guid workoutId, CancellationToken cancellationToken = default)
@@ -53,7 +51,6 @@ public class WorkoutsController : BaseApiController
     }
     
     [HttpGet("{date:datetime}")]
-    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WorkoutDto>> GetByDate([FromRoute] DateTime date, CancellationToken cancellationToken = default)

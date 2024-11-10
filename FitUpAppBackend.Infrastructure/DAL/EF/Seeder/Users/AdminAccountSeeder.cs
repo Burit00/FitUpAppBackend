@@ -1,23 +1,20 @@
 using System.Security.Claims;
 using FitUpAppBackend.Core.Identity.Entities;
-using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using Microsoft.AspNetCore.Identity;
 
 namespace FitUpAppBackend.Infrastructure.DAL.EF.Seeder.AdminAccount;
 
 public static class AdminAccountSeeder
 {
-    public static async Task SeedAsync(UserManager<User> userManager, EFContext context, CancellationToken cancellationToken)
+    public static async Task SeedAsync(UserManager<User> userManager)
     {
-        var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
-
         var admins = await userManager.GetUsersInRoleAsync(Core.Identity.Static.UserRoles.Admin);
 
         if (!admins.Any())
         {
             var admin = new User()
             {
-                UserName = "admin",
+                UserName = "admin@admin.com",
                 Email = "admin@admin.com",
             };
             
@@ -33,7 +30,5 @@ public static class AdminAccountSeeder
             };
             await userManager.AddClaimsAsync(admin, claims);
         }
-        
-        await transaction.CommitAsync(cancellationToken);
     }
 }
