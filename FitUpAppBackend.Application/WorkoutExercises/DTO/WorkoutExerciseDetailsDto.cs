@@ -1,3 +1,4 @@
+using FitUpAppBackend.Application.SetParameterNames.DTO;
 using FitUpAppBackend.Application.Workouts.DTO;
 using FitUpAppBackend.Core.WorkoutExercises.Entities;
 
@@ -10,7 +11,7 @@ public sealed class WorkoutExerciseDetailsDto
     public string Category { get; set; }
     public int OrderIndex { get; set; }
     public IEnumerable<WorkoutSetDto> Sets { get; set; }
-    public IEnumerable<string> Parameters { get; set; }
+    public IEnumerable<SetParameterNameDto> Parameters { get; set; }
     
     public WorkoutExerciseDetailsDto(WorkoutExercise workoutExercise)
     {
@@ -19,9 +20,11 @@ public sealed class WorkoutExerciseDetailsDto
         Category = workoutExercise.Exercise.Category.Name;
         OrderIndex = workoutExercise.OrderIndex;
         Sets = workoutExercise.WorkoutSets
+            .OrderBy(ws => ws.OrderIndex)
             .Select(ws => new WorkoutSetDto(ws))
             .ToList();
         Parameters = workoutExercise.Exercise.SetParameters
-            .Select(p => p.Name.ToString());
+            .OrderBy(p => p.Name)
+            .Select(p => new SetParameterNameDto(p));
     }    
 }

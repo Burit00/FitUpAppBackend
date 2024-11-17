@@ -21,7 +21,6 @@
         <Folder Include="SetParameterNames\Entities\" />
         <Folder Include="SetParameterNames\Exceptions\" />
         <Folder Include="Identity\Entities\" />
-        <Folder Include="SetParameters\Exceptions\" />
     </ItemGroup>
 
 </Project>

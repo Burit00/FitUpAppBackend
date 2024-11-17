@@ -22,23 +22,13 @@ public sealed class WorkoutSet : Entity
     public static WorkoutSet Create(int orderIndex, Guid workoutExerciseId)
         => new WorkoutSet(orderIndex, workoutExerciseId);
 
-    public void Update(int? orderIndex)
+    public void Update(int orderIndex)
     {
-        OrderIndex = orderIndex ?? OrderIndex;
+        OrderIndex = orderIndex;
     }
 
     public void AddSetParameterRange(IEnumerable<SetParameter> setParameters)
     {
         _setParameters.AddRange(setParameters);
-    }
-
-    public void UpdateSetParameterRange(IEnumerable<SetParameter> setParameters)
-    {
-        foreach (var setParameter in setParameters)
-        {
-            var originalSetParameter = _setParameters.FirstOrDefault(sp => sp.Id == setParameter.Id);
-            if (originalSetParameter is not null)
-                originalSetParameter.UpdateValue(setParameter.Value);
-        }
     }
 }

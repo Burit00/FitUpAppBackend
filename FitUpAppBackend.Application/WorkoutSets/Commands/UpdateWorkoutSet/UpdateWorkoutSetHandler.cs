@@ -1,5 +1,5 @@
 using FitUpAppBackend.Application.Common;
-using FitUpAppBackend.Core.SetParameters.Entities;
+using FitUpAppBackend.Core.WorkoutSets.Exceptions;
 using FitUpAppBackend.Core.WorkoutSets.Repositories;
 using FitUpAppBackend.Shared.Abstractions.Commands;
 
@@ -17,9 +17,11 @@ public class UpdateWorkoutSetHandler : ICommandHandler<UpdateWorkoutSetCommand, 
     public async Task<CreateOrUpdateResponse> HandleAsync(UpdateWorkoutSetCommand command, CancellationToken cancellationToken)
     {
         var workoutSet = await _workoutSetRepository.GetByIdAsync(command.Id, cancellationToken);
+
+        if (workoutSet is null)
+            throw new WorkoutSetNotFoundException();
         
         workoutSet.Update(command.OrderIndex);
-        workoutSet.UpdateSetParameterRange(command.ParameterValues.Select(pv => SetParameter.Create(pv.Id, pv.Value)));
         
         var result = await _workoutSetRepository.UpdateAsync(workoutSet, cancellationToken);
         

@@ -136,7 +136,7 @@ public static class CategoriesAndExercisesSeeder
             Core.SetParameterNames.Static.SetParameterNames.Reps,
         });
 
-    private static ExerciseRecord SitUpExercise = new ExerciseRecord("Przysiady", AbsCategoryName, new List<string>()
+    private static ExerciseRecord SitUpExercise = new ExerciseRecord("Brzuszki", AbsCategoryName, new List<string>()
         {
             Core.SetParameterNames.Static.SetParameterNames.Weight,
             Core.SetParameterNames.Static.SetParameterNames.Reps,

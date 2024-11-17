@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FitUpAppBackend.Api.Controllers.WorkoutExercises;
 
+[ApiAuthorize(Roles = UserRoles.User)]
 public class WorkoutExercisesController : BaseApiController
 {
     private readonly ICommandDispatcher _commandDispatcher;
@@ -23,17 +24,15 @@ public class WorkoutExercisesController : BaseApiController
     }
 
     [HttpPost]
-    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CreateOrUpdateResponse>> Create([FromBody] CreateWorkoutExerciseCommand command, CancellationToken cancellationToken = default)
     {
         var result = await _commandDispatcher.DispatchAsync<CreateWorkoutExerciseCommand, CreateOrUpdateResponse>(command, cancellationToken);
-        return CreatedAtAction("", new { workoutExerciseId = result.Id }, result);
+        return CreatedAtAction(nameof(Get), new { workoutExerciseId = result.Id }, result);
     }
 
     [HttpGet("{workoutExerciseId:guid}")]
-    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WorkoutExerciseDetailsDto>> Get([FromRoute] Guid workoutExerciseId, CancellationToken cancellationToken = default)
@@ -43,7 +42,6 @@ public class WorkoutExercisesController : BaseApiController
     }
 
     [HttpDelete("{workoutExerciseId:guid}")]
-    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete([FromRoute] Guid workoutExerciseId, CancellationToken cancellationToken = default)

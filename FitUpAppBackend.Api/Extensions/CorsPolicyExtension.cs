@@ -24,7 +24,7 @@ public static class CorsPolicyExtension
 
 
                 corsBuilder
-                    .WithOrigins(["http://localhost:3000"])
+                    .WithOrigins(["http://localhost:3000", "http://192.168.0.7:3000"])
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });

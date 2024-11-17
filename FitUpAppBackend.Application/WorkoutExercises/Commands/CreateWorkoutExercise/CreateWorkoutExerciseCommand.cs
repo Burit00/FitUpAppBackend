@@ -3,5 +3,5 @@ using FitUpAppBackend.Shared.Abstractions.Commands;
 
 namespace FitUpAppBackend.Application.WorkoutExercises.Commands.CreateWorkoutExercise;
 
-public sealed record CreateWorkoutExerciseCommand(ushort OrderIndex, Guid ExerciseId, Guid WorkoutId)
+public sealed record CreateWorkoutExerciseCommand(Guid ExerciseId, Guid WorkoutId, int OrderIndex = -1)
     : ICommand<CreateOrUpdateResponse>;

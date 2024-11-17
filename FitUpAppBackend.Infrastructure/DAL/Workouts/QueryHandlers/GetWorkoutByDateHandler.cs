@@ -29,6 +29,9 @@ public sealed class GetWorkoutByDateHandler : IQueryHandler<GetWorkoutByDateQuer
         var workout = await _context.Workouts
             .Include(w => w.WorkoutExercises)
             .ThenInclude(we => we.Exercise)
+            .ThenInclude(e => e.SetParameters)
+            .Include(w => w.WorkoutExercises)
+            .ThenInclude(we => we.Exercise)
             .ThenInclude(e => e.Category)
             .Include(w => w.WorkoutExercises)
             .ThenInclude(we => we.WorkoutSets)

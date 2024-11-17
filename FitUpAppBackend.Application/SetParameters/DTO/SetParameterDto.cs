@@ -10,8 +10,8 @@ public sealed class SetParameterDto
     
     public SetParameterDto(SetParameter parameter)
     {
-        Id = parameter.Id;
-        Name = parameter.SetParameterName.Name.ToString();
+        Id = parameter.SetParameterNameId;
+        Name = parameter.SetParameterName.Name;
         Value = parameter.Value;
         
     }

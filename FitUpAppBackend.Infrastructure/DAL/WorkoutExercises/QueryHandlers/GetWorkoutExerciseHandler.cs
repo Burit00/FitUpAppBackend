@@ -20,6 +20,8 @@ public sealed class GetWorkoutExerciseHandler: IQueryHandler<GetWorkoutExerciseQ
         var workoutExercise = await _context.WorkoutExercises
             .Include(we => we.Exercise)
             .ThenInclude(e => e.SetParameters)
+            .Include(w => w.Exercise)
+            .ThenInclude(e => e.Category)
             .Include(we => we.WorkoutSets)
             .ThenInclude(we => we.SetParameters)
             .FirstOrDefaultAsync(we => we.Id == query.Id, cancellationToken);

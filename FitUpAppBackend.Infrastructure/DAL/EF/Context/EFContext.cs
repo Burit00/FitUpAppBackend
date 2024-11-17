@@ -42,16 +42,16 @@ public class EFContext : IdentityDbContext<User, IdentityRole<Guid>, Guid, Ident
         builder.Entity<SetParameter>()
             .HasOne(e => e.WorkoutSet)
             .WithMany(e => e.SetParameters)
-            .OnDelete(DeleteBehavior.ClientCascade);
+            .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<WorkoutSet>()
             .HasOne(e => e.WorkoutExercise)
             .WithMany(e => e.WorkoutSets)
-            .OnDelete(DeleteBehavior.ClientCascade);
+            .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<WorkoutExercise>()
             .HasOne(e => e.Workout)
             .WithMany(e => e.WorkoutExercises)
-            .OnDelete(DeleteBehavior.ClientCascade);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

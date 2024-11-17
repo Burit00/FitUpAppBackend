@@ -1,6 +1,7 @@
 using FitUpAppBackend.Api.Attributes;
 using FitUpAppBackend.Application.Common;
 using FitUpAppBackend.Application.WorkoutSets.Commands.CreateWorkoutSet;
+using FitUpAppBackend.Application.WorkoutSets.Commands.DeleteWorkoutSet;
 using FitUpAppBackend.Application.WorkoutSets.Commands.UpdateWorkoutSet;
 using FitUpAppBackend.Core.Identity.Static;
 using FitUpAppBackend.Shared.Abstractions.Commands;
@@ -18,7 +19,7 @@ public class WorkoutSetsController : BaseApiController
     }
 
     [HttpPost]
-    [ApiAuthorize(Roles = UserRoles.Admin)]
+    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Guid>> Create(CreateWorkoutSetCommand command, CancellationToken cancellationToken = default)
@@ -28,7 +29,7 @@ public class WorkoutSetsController : BaseApiController
     }
 
     [HttpPut]
-    [ApiAuthorize(Roles = UserRoles.Admin)]
+    [ApiAuthorize(Roles = UserRoles.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -36,5 +37,16 @@ public class WorkoutSetsController : BaseApiController
     {
         var result = await _commandDispatcher.DispatchAsync<UpdateWorkoutSetCommand, CreateOrUpdateResponse>(command, cancellationToken);
         return Ok(result.Id);
+    }
+
+    [HttpDelete("{workoutSetId:guid}")]
+    [ApiAuthorize(Roles = UserRoles.User)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Guid>> Delete([FromRoute] Guid workoutSetId, CancellationToken cancellationToken = default)
+    {
+        await _commandDispatcher.DispatchAsync(new DeleteWorkoutSetCommand(workoutSetId), cancellationToken);
+        return Ok();
     }
 }
