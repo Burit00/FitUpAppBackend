@@ -29,6 +29,9 @@ public static class AdminAccountSeeder
                 new Claim(ClaimTypes.NameIdentifier, admin.Id.ToString())
             };
             await userManager.AddClaimsAsync(admin, claims);
+            
+            var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(admin);
+            await userManager.ConfirmEmailAsync(admin, emailConfirmationToken);
         }
     }
 }

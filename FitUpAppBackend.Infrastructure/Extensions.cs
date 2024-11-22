@@ -10,6 +10,7 @@ using FitUpAppBackend.Infrastructure.DAL.EF.Context;
 using FitUpAppBackend.Infrastructure.DAL.Extensions;
 using FitUpAppBackend.Infrastructure.DAL.Identity.Services;
 using FitUpAppBackend.Infrastructure.Exceptions;
+using FitUpAppBackend.Infrastructure.Integrations.Email.Configurations;
 using FitUpAppBackend.Infrastructure.Integrations.Email.Services;
 using FitUpAppBackend.Shared;
 using Microsoft.AspNetCore.Builder;
@@ -53,7 +54,12 @@ public static class Extensions
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         
-        services.AddScoped<IEmailService, EmailService>();
+        // services.AddScoped<IEmailService, TrapMailService>();
+        
+        var sendGridConfig = new SendGridConfig();
+        configuration.GetSection("SendGrid").Bind(sendGridConfig);
+        services.AddSingleton(sendGridConfig);
+        services.AddScoped<IEmailService, SendGridMailService>();
         
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IIdentityService, IdentityService>();

@@ -32,6 +32,9 @@ public static class TestUserAccountSeeder
             new Claim(ClaimTypes.NameIdentifier, testUser.Id.ToString())
         };
         await userManager.AddClaimsAsync(testUser, claims);
+        
+        var confirmEmailToken = await userManager.GenerateEmailConfirmationTokenAsync(testUser);
+        await userManager.ConfirmEmailAsync(testUser, confirmEmailToken);
     }
 
     private record UserRecord(string Email, string UserName, string Password);

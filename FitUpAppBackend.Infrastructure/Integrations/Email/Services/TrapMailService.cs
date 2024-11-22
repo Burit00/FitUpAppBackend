@@ -8,7 +8,7 @@ using MimeKit;
 
 namespace FitUpAppBackend.Infrastructure.Integrations.Email.Services;
 
-public class EmailService : IEmailService
+public class TrapMailService : IEmailService
 {
     private sealed record MailtrapFrom(string Email, string Name);
     private sealed record MailtrapTo(string Email);
@@ -23,12 +23,12 @@ public class EmailService : IEmailService
     
     private readonly EmailConfig _emailConfig;
 
-    public EmailService(EmailConfig emailConfig)
+    public TrapMailService(EmailConfig emailConfig)
     {
         _emailConfig = emailConfig;
     }
 
-    public async Task SendAsync(string email, string subject, string body)
+    public async Task SendMailAsync(string email, string subject, string body)
     {
         MimeMessage emailMessage = CreateMessage(email, subject, body);
 
@@ -40,6 +40,11 @@ public class EmailService : IEmailService
             await smtpClient.SendAsync(emailMessage);
             await smtpClient.DisconnectAsync(true);
         }
+    }
+
+    public Task SendTemplateMailAsync(string email, string subject, string templateId, object templateData)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task SendByRequestAsync(string email, string subject, string body)

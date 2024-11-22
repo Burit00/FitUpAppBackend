@@ -66,21 +66,72 @@ public class IdentityService : IIdentityService
         }
         
         await transaction.CommitAsync(cancellationToken);
-        
-        // await SendUserVerificationEmailAsync(newUser);
     }
 
     public async Task<JsonWebToken> SignInAsync(string email, string password, CancellationToken cancellationToken)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
-
+        var user = await _userManager.FindByEmailAsync(email);
+        
         if (user is null) throw new BadUserCredentialsException();
-
+        if (!user.EmailConfirmed) throw new EmailNotVerifiedException();
+        
         var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
         if (!result.Succeeded) throw new BadUserCredentialsException();
 
         var jwt = await GenerateJwtAsync(user, cancellationToken);
         return jwt;
+    }
+
+    public async Task<EmailConfirmationTokenDto> GenerateEmailConfirmationTokenAsync(string email, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var encodedToken = Uri.EscapeDataString(token);
+        
+        return new EmailConfirmationTokenDto
+        {
+            Token = encodedToken,
+            UserId = user.Id,
+        };
+    }
+
+    public async Task<ResetPasswordTokenDto> GeneratePasswordResetTokenAsync(string email, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
+            throw new ResetPasswordRequestException();
+        
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        return new ResetPasswordTokenDto()
+        {
+            Token =  Uri.EscapeDataString(token),
+            UserId = user.Id,
+        };
+    }
+
+    public async Task ResetPasswordAsync(Guid userId, string password, string resetPasswordToken, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        
+        if(user is null) throw new ResetPasswordException();
+        
+        var decodedToken = Uri.UnescapeDataString(resetPasswordToken);
+        
+        var result = await _userManager.ResetPasswordAsync(user, decodedToken, password);
+        Console.WriteLine(result.Errors);
+        if (!result.Succeeded)
+            throw new ResetPasswordException();
+    }
+
+    public async Task<User> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        
+        if(user is null)
+            throw new UserNotFoundException();
+
+        return user;
     }
 
     private async Task<JsonWebToken> GenerateJwtAsync(User user, CancellationToken cancellationToken)
@@ -96,16 +147,15 @@ public class IdentityService : IIdentityService
     public async Task ConfirmEmailAsync(Guid userId, string token, CancellationToken cancellationToken)
     {
         var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
-        await _userManager.ConfirmEmailAsync(user, token);
-    }
 
-    private async Task SendUserVerificationEmailAsync(User user)
-    {
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var verifyEmailUrl = $"https://localhost:3000/auth/confirmEmail?userId={user.Id}&token={token}";
-        var body = $"Hi,\nTo verify your email address click link below:\n<a href=\"{verifyEmailUrl}\">{verifyEmailUrl}</a>";
+        if (user == null)
+            throw new EmailVerificationException();
         
-        await _emailService.SendAsync(user.Email, "Email Verification", token);
+        var decodedToken = Uri.UnescapeDataString(token);
+        
+        var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+        
+        if(!result.Succeeded) throw new EmailVerificationException();
     }
     
 }
