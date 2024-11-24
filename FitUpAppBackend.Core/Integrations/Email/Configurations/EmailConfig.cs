@@ -2,6 +2,7 @@ namespace FitUpAppBackend.Core.Integrations.Email.Configurations;
 
 public class EmailConfig
 {
+    public string ApiKey { get; set; }
     public string Server { get; set; }
     public int Port { get; set; }
     public string SenderName { get; set; }
