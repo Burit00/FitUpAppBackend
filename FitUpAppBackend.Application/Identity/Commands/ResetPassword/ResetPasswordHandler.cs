@@ -15,6 +15,6 @@ public sealed class ResetPasswordHandler : ICommandHandler<ResetPasswordCommand>
     public async Task HandleAsync(ResetPasswordCommand command, CancellationToken cancellationToken)
     {
         
-        await _identityService.ResetPasswordAsync(command.UserId, command.Password, command.Token, cancellationToken);
+        await _identityService.ResetPasswordAsync(command.Email, command.Password, command.Token, cancellationToken);
     }
 }

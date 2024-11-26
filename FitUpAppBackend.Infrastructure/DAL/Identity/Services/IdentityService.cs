@@ -29,7 +29,7 @@ public class IdentityService : IIdentityService
     {
         var user = await _userManager.FindByEmailAsync(email);
 
-        if (user == null)
+        if (user != null)
             throw new UserWithEmailAlreadyExistException(email);
             
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
@@ -79,20 +79,16 @@ public class IdentityService : IIdentityService
         return jwt;
     }
 
-    public async Task<EmailConfirmationTokenDto> GenerateEmailConfirmationTokenAsync(string email, CancellationToken cancellationToken)
+    public async Task<string> GenerateEmailConfirmationTokenAsync(string email, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(email);
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var encodedToken = Uri.EscapeDataString(token);
-        
-        return new EmailConfirmationTokenDto
-        {
-            Token = encodedToken,
-            UserId = user.Id,
-        };
+
+        return encodedToken;
     }
 
-    public async Task<ResetPasswordTokenDto> GeneratePasswordResetTokenAsync(string email, CancellationToken cancellationToken)
+    public async Task<string> GeneratePasswordResetTokenAsync(string email, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(email);
 
@@ -100,23 +96,21 @@ public class IdentityService : IIdentityService
             throw new ResetPasswordRequestException();
         
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        return new ResetPasswordTokenDto()
-        {
-            Token =  Uri.EscapeDataString(token),
-            UserId = user.Id,
-        };
+        var encodedToken = Uri.EscapeDataString(token);
+        
+        return encodedToken;
     }
 
-    public async Task ResetPasswordAsync(Guid userId, string password, string resetPasswordToken, CancellationToken cancellationToken)
+    public async Task ResetPasswordAsync(string email, string password, string resetPasswordToken, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByIdAsync(userId.ToString());
+        var user = await _userManager.FindByEmailAsync(email);
         
         if(user is null) throw new ResetPasswordException();
         
         var decodedToken = Uri.UnescapeDataString(resetPasswordToken);
         
         var result = await _userManager.ResetPasswordAsync(user, decodedToken, password);
-        Console.WriteLine(result.Errors);
+
         if (!result.Succeeded)
             throw new ResetPasswordException();
     }
@@ -141,9 +135,9 @@ public class IdentityService : IIdentityService
         return jwt;
     }
 
-    public async Task ConfirmEmailAsync(Guid userId, string token, CancellationToken cancellationToken)
+    public async Task ConfirmEmailAsync(string email, string token, CancellationToken cancellationToken)
     {
-        var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+        var user = await _userManager.FindByEmailAsync(email);
 
         if (user == null)
             throw new EmailVerificationException();

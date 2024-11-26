@@ -40,7 +40,7 @@ public class AccountController : BaseApiController
     [HttpPost("email-verification")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<JsonWebToken>> EmailVerification(EmailVerificationCommand request,
+    public async Task<IActionResult> EmailVerification(EmailVerificationCommand request,
         CancellationToken cancellationToken = default)
     {
         await _commandDispatcher.DispatchAsync(request, cancellationToken);
@@ -50,7 +50,7 @@ public class AccountController : BaseApiController
     [HttpPost("reset-password-request")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<JsonWebToken>> ResetPasswordRequest(ResetPasswordRequestCommand request,
+    public async Task<IActionResult> ResetPasswordRequest(ResetPasswordRequestCommand request,
         CancellationToken cancellationToken = default)
     {
         await _commandDispatcher.DispatchAsync(request, cancellationToken);
@@ -60,7 +60,7 @@ public class AccountController : BaseApiController
     [HttpPost("reset-password")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<JsonWebToken>> ResetPassword(ResetPasswordCommand request,
+    public async Task<IActionResult> ResetPassword(ResetPasswordCommand request,
         CancellationToken cancellationToken = default)
     {
         await _commandDispatcher.DispatchAsync(request, cancellationToken);

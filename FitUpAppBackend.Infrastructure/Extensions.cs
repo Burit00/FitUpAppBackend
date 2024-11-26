@@ -4,6 +4,7 @@ using FitUpAppBackend.Core.Identity.Entities;
 using FitUpAppBackend.Core.Identity.Services;
 using FitUpAppBackend.Core.Integrations.Email.Configurations;
 using FitUpAppBackend.Core.Integrations.Email.Services;
+using FitUpAppBackend.Core.Integrations.Frontend.Configurations;
 using FitUpAppBackend.Infrastructure.Common.Services;
 using FitUpAppBackend.Infrastructure.DAL.EF;
 using FitUpAppBackend.Infrastructure.DAL.EF.Context;
@@ -49,6 +50,9 @@ public static class Extensions
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         
+        var frontendConfig = new FrontendConfig();
+        configuration.GetSection("FrontendConfig").Bind(frontendConfig);
+        services.AddSingleton(frontendConfig);
         
         var emailConfig = new EmailConfig();
         configuration.GetSection("EmailConfig").Bind(emailConfig);

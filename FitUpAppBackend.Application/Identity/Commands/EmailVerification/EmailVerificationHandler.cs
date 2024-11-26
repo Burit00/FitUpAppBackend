@@ -14,6 +14,6 @@ public sealed class EmailVerificationHandler : ICommandHandler<EmailVerification
 
     public async Task HandleAsync(EmailVerificationCommand command, CancellationToken cancellationToken)
     {
-        await _identityService.ConfirmEmailAsync(command.UserId, command.Token, cancellationToken);
+        await _identityService.ConfirmEmailAsync(command.Email, command.Token, cancellationToken);
     }
 }
