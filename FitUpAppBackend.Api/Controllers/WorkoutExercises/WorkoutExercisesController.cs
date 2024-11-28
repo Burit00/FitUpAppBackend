@@ -2,6 +2,7 @@ using FitUpAppBackend.Api.Attributes;
 using FitUpAppBackend.Application.Common;
 using FitUpAppBackend.Application.WorkoutExercises.Commands.CreateWorkoutExercise;
 using FitUpAppBackend.Application.WorkoutExercises.Commands.DeleteWorkoutExercise;
+using FitUpAppBackend.Application.WorkoutExercises.Commands.UpdateWorkoutExercise;
 using FitUpAppBackend.Application.WorkoutExercises.DTO;
 using FitUpAppBackend.Application.WorkoutExercises.Queries.GetWorkoutExercise;
 using FitUpAppBackend.Core.Identity.Static;
@@ -30,6 +31,16 @@ public class WorkoutExercisesController : BaseApiController
     {
         var result = await _commandDispatcher.DispatchAsync<CreateWorkoutExerciseCommand, CreateOrUpdateResponse>(command, cancellationToken);
         return CreatedAtAction(nameof(Get), new { workoutExerciseId = result.Id }, result);
+    }
+
+    [HttpPut("{workoutExerciseId:guid}/change-order")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<CreateOrUpdateResponse>> Update([FromRoute] Guid workoutExerciseId, [FromBody] UpdateWorkoutExerciseCommand command, CancellationToken cancellationToken = default)
+    {
+        command.WorkoutExerciseMovedId = workoutExerciseId;
+        await _commandDispatcher.DispatchAsync(command, cancellationToken);
+        return Ok();
     }
 
     [HttpGet("{workoutExerciseId:guid}")]
