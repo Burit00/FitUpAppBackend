@@ -70,7 +70,6 @@ public class WorkoutExerciseRepository : IWorkoutExerciseRepository
         if (workout == null || workout.WorkoutExercises.Any(we => we.WorkoutId == workoutExerciseOverId))
             throw new WorkoutExerciseNotFoundException();
         
-        
         var sortedWorkoutExercises = workout.WorkoutExercises.OrderBy(we => we.OrderIndex).ToList();
         var workoutExerciseMoved = sortedWorkoutExercises.Find(we => we.Id == workoutExerciseMovedId);
         var workoutExerciseOverIndex = sortedWorkoutExercises.FindIndex(we => we.Id == workoutExerciseOverId);
@@ -100,27 +99,5 @@ public class WorkoutExerciseRepository : IWorkoutExerciseRepository
         if (workout is not null && !workout.WorkoutExercises.Any())
             _context.Workouts.Remove(workout);
         await _context.SaveChangesAsync(cancellationToken);
-    }
-
-    private void CorrectOrder(List<WorkoutExercise> exercisesFromWorkout)
-    {
-        // if (workoutExercise.OrderIndex < 0 || workoutExercise.OrderIndex >= exercisesFromWorkout.Count)
-        //     workoutExercise.Update(exercisesFromWorkout.Count);
-        // else
-        // {
-        //     var initialOrderIndex = workoutExercise.OrderIndex;
-        //     foreach (var exerciseFromWorkout in exercisesFromWorkout)
-        //     {
-        //         if (exerciseFromWorkout.OrderIndex > initialOrderIndex)
-        //             exerciseFromWorkout.Update(exerciseFromWorkout.OrderIndex + 1);
-        //     }
-        // }
-
-        var orderedWorkouts = exercisesFromWorkout.OrderBy(w => w.OrderIndex).ToList();
-
-        foreach (var tempWorkoutExercise in orderedWorkouts)
-        {
-            tempWorkoutExercise.Update(orderedWorkouts.IndexOf(tempWorkoutExercise));
-        }
     }
 }
