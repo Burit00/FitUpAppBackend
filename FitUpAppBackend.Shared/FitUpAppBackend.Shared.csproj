@@ -7,18 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
         <PackageReference Include="Scrutor" Version="5.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FitUpAppBackend.Shared.Abstractions\FitUpAppBackend.Shared.Abstractions.csproj"/>
+        <ProjectReference Include="..\FitUpAppBackend.Shared.Abstractions\FitUpAppBackend.Shared.Abstractions.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Routing.Abstractions">
-        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.3\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

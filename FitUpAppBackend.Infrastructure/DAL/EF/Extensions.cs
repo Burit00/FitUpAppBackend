@@ -10,7 +10,7 @@ public static class Extensions
 {
     public static IServiceCollection AddEFContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("FitUpDB");
+        var connectionString = configuration.GetConnectionString("Database");
         
         services.AddDbContext<EFContext>(options =>
             options.UseNpgsql(connectionString).EnableSensitiveDataLogging());
