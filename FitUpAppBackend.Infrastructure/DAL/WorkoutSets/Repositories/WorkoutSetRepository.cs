@@ -22,21 +22,24 @@ public class WorkoutSetRepository : IWorkoutSetRepository
         var exercise = await _context.Exercises
             .Include(e => e.SetParameters)
             .Include(e => e.WorkoutExercises)
-            .FirstOrDefaultAsync(e => e.WorkoutExercises.Any(we => we.Id == workoutSet.WorkoutExerciseId), cancellationToken);
+            .FirstOrDefaultAsync(e => e.WorkoutExercises.Any(we => we.Id == workoutSet.WorkoutExerciseId),
+                cancellationToken);
 
         var exerciseParameterNames = exercise.SetParameters;
-        
+
         foreach (var setParameter in workoutSet.SetParameters)
         {
-            var isWorkoutSetParameterCorrect = exerciseParameterNames.Any(pn => pn.Id == setParameter.SetParameterNameId);
+            var isWorkoutSetParameterCorrect =
+                exerciseParameterNames.Any(pn => pn.Id == setParameter.SetParameterNameId);
             if (!isWorkoutSetParameterCorrect)
                 throw new WorkoutSetHasInvalidParameterException();
             var setParameterCount = workoutSet.SetParameters.Count(sp => sp.Id == setParameter.SetParameterNameId);
             if (setParameterCount > 1)
                 throw new WorkoutSetHasDuplicateParametersException();
         }
-        
-        var setsFromWorkout = await _workoutSets.Where(ws => ws.WorkoutExerciseId == workoutSet.WorkoutExerciseId).ToListAsync(cancellationToken);
+
+        var setsFromWorkout = await _workoutSets.Where(ws => ws.WorkoutExerciseId == workoutSet.WorkoutExerciseId)
+            .ToListAsync(cancellationToken);
         ChangeOrder(workoutSet, setsFromWorkout);
 
         var result = await _workoutSets.AddAsync(workoutSet, cancellationToken);
@@ -47,9 +50,10 @@ public class WorkoutSetRepository : IWorkoutSetRepository
 
     public async Task<Guid> UpdateAsync(WorkoutSet workoutSet, CancellationToken cancellationToken)
     {
-        var setsFromWorkout = await _workoutSets.Where(ws => ws.WorkoutExerciseId == workoutSet.WorkoutExerciseId).ToListAsync(cancellationToken);
+        var setsFromWorkout = await _workoutSets.Where(ws => ws.WorkoutExerciseId == workoutSet.WorkoutExerciseId)
+            .ToListAsync(cancellationToken);
         ChangeOrder(workoutSet, setsFromWorkout);
-        
+
         var result = _workoutSets.Update(workoutSet);
         _context.UpdateRange(setsFromWorkout);
         await _context.SaveChangesAsync(cancellationToken);
@@ -58,11 +62,12 @@ public class WorkoutSetRepository : IWorkoutSetRepository
 
     public async Task<WorkoutSet> GetByIdAsync(Guid workoutSetId, CancellationToken cancellationToken)
     {
-        var result = await _workoutSets.Include(ws => ws.SetParameters).FirstOrDefaultAsync(sp => sp.Id == workoutSetId, cancellationToken);
-        
+        var result = await _workoutSets.Include(ws => ws.SetParameters)
+            .FirstOrDefaultAsync(sp => sp.Id == workoutSetId, cancellationToken);
+
         if (result is null)
             throw new WorkoutSetNotFoundException();
-        
+
         return result;
     }
 
@@ -76,7 +81,15 @@ public class WorkoutSetRepository : IWorkoutSetRepository
     private void ChangeOrder(WorkoutSet workoutSet, List<WorkoutSet> setsFromWorkout)
     {
         if (workoutSet.OrderIndex < 0 || workoutSet.OrderIndex >= setsFromWorkout.Count)
-            workoutSet.Update(setsFromWorkout.Count);
+        {
+            if (setsFromWorkout.Count == 0)
+                workoutSet.Update(0);
+            else
+            {
+                var highestOrderIndex = setsFromWorkout.Max(sp => sp.OrderIndex);
+                workoutSet.Update(highestOrderIndex + 1);
+            }
+        }
         else
         {
             var initialOrderIndex = workoutSet.OrderIndex;
@@ -86,7 +99,7 @@ public class WorkoutSetRepository : IWorkoutSetRepository
                     setFromWorkout.Update(setFromWorkout.OrderIndex + 1);
             }
         }
-        
+
         var tempArr = new List<WorkoutSet>();
         tempArr.Add(workoutSet);
         tempArr.AddRange(setsFromWorkout);
