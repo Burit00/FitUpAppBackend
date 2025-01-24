@@ -3,6 +3,7 @@ using FitUpAppBackend.Application.Common;
 using FitUpAppBackend.Application.Exercises.Commands.CreateExercise;
 using FitUpAppBackend.Application.Exercises.Commands.UpdateExercise;
 using FitUpAppBackend.Application.Exercises.DTO;
+using FitUpAppBackend.Application.Exercises.Queries.GetAnalyticData;
 using FitUpAppBackend.Application.Exercises.Queries.GetExercise;
 using FitUpAppBackend.Application.Exercises.Queries.GetExercises;
 using FitUpAppBackend.Core.Identity.Static;
@@ -69,6 +70,20 @@ public class ExercisesController : BaseApiController
     {
         var result =
             await _queryDispatcher.DispatchAsync<GetExerciseQuery, ExerciseDto>(new GetExerciseQuery(exerciseId),
+                cancellationToken);
+        return Ok(result);
+    }
+    
+    
+
+    [HttpGet("analytics")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ExerciseDto>>> GetAnalyticData([FromQuery] GetAnalyticDataQuery query,
+        CancellationToken cancellationToken = default)
+    {
+        var result =
+            await _queryDispatcher.DispatchAsync<GetAnalyticDataQuery, AnalyticDataArrayDto>(query,
                 cancellationToken);
         return Ok(result);
     }
