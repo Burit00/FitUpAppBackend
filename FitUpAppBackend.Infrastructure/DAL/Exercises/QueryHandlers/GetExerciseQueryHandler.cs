@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitUpAppBackend.Infrastructure.DAL.Exercises.QueryHandlers;
 
-public sealed class GetExerciseQueryHandler : IQueryHandler<GetExerciseQuery, ExerciseDto>
+public sealed class GetExerciseQueryHandler : IQueryHandler<GetExerciseQuery, ExerciseDetailsDto>
 {
     private readonly EFContext _context;
 
@@ -15,14 +15,17 @@ public sealed class GetExerciseQueryHandler : IQueryHandler<GetExerciseQuery, Ex
     {
         _context = context;
     }
-    
-    public async Task<ExerciseDto> HandleAsync(GetExerciseQuery query, CancellationToken cancellationToken)
+
+    public async Task<ExerciseDetailsDto> HandleAsync(GetExerciseQuery query, CancellationToken cancellationToken)
     {
-        var result = await _context.Exercises.Include(e => e.Category).FirstOrDefaultAsync(e => e.Id.Equals(query.Id), cancellationToken);
-        
+        var result = await _context.Exercises
+            .Include(e => e.SetParameters)
+            .Include(e => e.Category)
+            .FirstOrDefaultAsync(e => e.Id.Equals(query.Id), cancellationToken);
+
         if (result is null)
             throw new ExerciseNotFoundException(query.Id);
-        
-        return new ExerciseDto(result);
+
+        return new ExerciseDetailsDto(result);
     }
 }
