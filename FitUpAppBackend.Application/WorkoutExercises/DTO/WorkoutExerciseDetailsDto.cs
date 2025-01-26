@@ -8,7 +8,9 @@ public sealed class WorkoutExerciseDetailsDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+    public Guid ExerciseId { get; set; }
     public string Category { get; set; }
+    public Guid CategoryId { get; set; }
     public int OrderIndex { get; set; }
     public IEnumerable<WorkoutSetDto> Sets { get; set; }
     public IEnumerable<SetParameterNameDto> Parameters { get; set; }
@@ -17,7 +19,9 @@ public sealed class WorkoutExerciseDetailsDto
     {
         Id = workoutExercise.Id;
         Name = workoutExercise.Exercise.Name;
+        ExerciseId = workoutExercise.Exercise.Id;
         Category = workoutExercise.Exercise.Category.Name;
+        CategoryId = workoutExercise.Exercise.Category.Id;
         OrderIndex = workoutExercise.OrderIndex;
         Sets = workoutExercise.WorkoutSets
             .OrderBy(ws => ws.OrderIndex)

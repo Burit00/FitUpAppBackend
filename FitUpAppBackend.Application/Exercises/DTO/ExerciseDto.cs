@@ -3,7 +3,7 @@ using FitUpAppBackend.Core.Exercises.Entities;
 
 namespace FitUpAppBackend.Application.Exercises.DTO;
 
-public sealed class ExerciseDto
+public class ExerciseDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

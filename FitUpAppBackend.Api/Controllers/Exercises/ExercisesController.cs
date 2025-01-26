@@ -65,21 +65,21 @@ public class ExercisesController : BaseApiController
     [HttpGet("{exerciseId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ExerciseDto>> GetById([FromRoute] Guid exerciseId,
+    public async Task<ActionResult<ExerciseDetailsDto>> GetById([FromRoute] Guid exerciseId,
         CancellationToken cancellationToken = default)
     {
         var result =
-            await _queryDispatcher.DispatchAsync<GetExerciseQuery, ExerciseDto>(new GetExerciseQuery(exerciseId),
+            await _queryDispatcher.DispatchAsync<GetExerciseQuery, ExerciseDetailsDto>(new GetExerciseQuery(exerciseId),
                 cancellationToken);
         return Ok(result);
     }
-    
-    
+
 
     [HttpGet("analytics")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<ExerciseDto>>> GetAnalyticData([FromQuery] GetAnalyticDataQuery query,
+    public async Task<ActionResult<IEnumerable<AnalyticDataArrayDto>>> GetAnalyticData(
+        [FromQuery] GetAnalyticDataQuery query,
         CancellationToken cancellationToken = default)
     {
         var result =

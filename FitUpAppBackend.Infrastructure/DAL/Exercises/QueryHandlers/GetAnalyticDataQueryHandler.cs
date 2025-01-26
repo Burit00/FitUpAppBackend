@@ -95,7 +95,7 @@ public class GetAnalyticDataQueryHandler : IQueryHandler<GetAnalyticDataQuery, A
     {
         public double Calculate(List<WorkoutSet> workoutSets)
         {
-            var bestOneMaxRep = 0.0f;
+            var bestOneMaxRep = 0.0;
 
             foreach (var workoutSet in workoutSets)
             {
@@ -114,7 +114,7 @@ public class GetAnalyticDataQueryHandler : IQueryHandler<GetAnalyticDataQuery, A
 
                 // One max rep Lombardi formula w * (r ^ 0.1)
                 var oneMaxRep = reps == 1 ? weight : weight * Math.Pow(reps, 0.1);
-                if (oneMaxRep > bestOneMaxRep) bestOneMaxRep = (float)Math.Round(oneMaxRep, 2);
+                if (oneMaxRep > bestOneMaxRep) bestOneMaxRep = Math.Round(oneMaxRep, 1);
             }
 
             return bestOneMaxRep;
